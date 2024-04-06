@@ -26,27 +26,21 @@ app.post("/api/login", (req, res) => {
 	);
 
 	if (result.length !== 1) {
-		return res.json({
-			error_message: "Incorrect credentials",
+		return res.status(401).send({
+			error_message: "Incorrect Credentials"
 		});
 	}
 	code = generateCode();
-	/*
-		👇🏻 Log the user's number and the code sent
-		to the console during development
-	*/
-	//console.log("Telephone Number", result[0].tel);
-	//console.log(`Generated code is ${code}`);
+	console.log("Telephone Number", result[0].tel);
+	console.log(`Generated code is ${code}`);
 
-	//👇🏻 Send the SMS via Novu
-	sendNovuNotification(result[0].tel, code);
+	let user = result[0];
 
 	res.json({
-		message: "Login successfully",
-		data: {
-			username: result[0].username,
-		},
-	});
+			username: user.username,
+			id:user.id,
+			requiresVerification: true
+		});
 });
 
 app.post("/api/register", (req, res) => {
