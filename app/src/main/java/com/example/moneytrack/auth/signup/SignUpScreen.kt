@@ -1,5 +1,6 @@
 package com.example.moneytrack.auth.signup
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,25 +33,30 @@ import com.example.moneytrack.core.components.textfield.rememberTextFieldState
 import com.example.moneytrack.ui.theme.LocalDimens
 import com.example.notesing.core.components.textfield.AppTextField
 
+private const val TAG = "SignUpScreen"
+
 @Composable
 fun SignUpScreen(
     modifier: Modifier = Modifier,
     viewModel: SignUpScreenViewModel = hiltViewModel(),
     navigateBack: () -> Unit,
-    navigateToOtpVerification: () -> Unit
+    navigateToOtpVerification: (token: String) -> Unit
 ) {
-    val userNameTextFieldState = rememberTextFieldState(hint = "Enter your name")
-    val emailTextFieldState = rememberTextFieldState(hint = "Enter your email")
-    val passwordTextFieldState = rememberTextFieldState(hint = "Password")
+    val userNameTextFieldState =
+        rememberTextFieldState(hint = "Enter your name", initValue = "sfsd")
+    val emailTextFieldState =
+        rememberTextFieldState(hint = "Enter your email", initValue = "svasdf")
+    val passwordTextFieldState = rememberTextFieldState(hint = "Password", initValue = "qeee")
     val confirmPasswordTextFieldState =
-        rememberTextFieldState(hint = "Please re-enter your password")
+        rememberTextFieldState(hint = "Please re-enter your password", initValue = "qeee")
 
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LaunchedEffect(state.signUpSuccess) {
-        if (state.signUpSuccess) {
-            navigateToOtpVerification()
+    LaunchedEffect(state.signUpToken) {
+        val token = state.signUpToken
+        if (token != null) {
+            navigateToOtpVerification(token)
             viewModel.onSignUpSuccessHandled()
         }
     }

@@ -6,18 +6,20 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 const users = [];
-let code;
+let userOtpCodes = {};
 
 const generateID = () => Math.random().toString(36).substring(2, 10);
-const generateCode = () => Math.random().toString(36).substring(2, 12);
-
-const sendNovuNotification = async (recipient, verificationCode) => {
-	try {
-		console.log(verificationCode);
-	} catch (err) {
-		console.error(err);
+const generateCode = ()=> {
+	const characters = '0123456789';
+	const charactersLength = characters.length;
+	let otp = '';
+	for (let i = 0; i < 6; i++) {
+	  otp += characters.charAt(Math.floor(Math.random() * charactersLength));
 	}
-};
+	return otp;
+  }
+  
+
 
 app.post("/api/signIn", (req, res) => {
 	const { email, password } = req.body;
@@ -31,7 +33,8 @@ app.post("/api/signIn", (req, res) => {
 		});
 	}
 	code = generateCode();
-	console.log("Telephone Number", result[0].tel);
+	
+	console.log(`OTP sent to email: ${email}`);
 	console.log(`Generated code is ${code}`);
 
 	let user = result[0];
@@ -44,13 +47,19 @@ app.post("/api/signIn", (req, res) => {
 });
 
 app.post("/api/signUp", (req, res) => {
-	const { email, password, tel, username } = req.body;
-	let result = users.filter((user) => user.email === email || user.tel === tel);
+	const { email, password, username } = req.body;
+	let result = users.filter((user) => user.email === email);
 	if (result.length === 0) {
-		const newUser = { id: generateID(), email, password, username, tel };
+		const newUser = { id: generateID(), email, password, username };
 		users.push(newUser);
+		let code = generateCode();
+		userOtpCodes[newUser.id] = code;
+		console.log(`OTP sent to email ${email}`);
+		console.log(`The OTP is ${code}rs`)
 		return res.json({
 			message: "Account created successfully!",
+			userId: newUser.id,
+			email: email
 		});
 	}
 	res.status(409).send({
@@ -58,7 +67,7 @@ app.post("/api/signUp", (req, res) => {
 	});
 });
 
-app.post("/api/verification", (req, res) => {
+app.post("/api/verification", (req, res) => { 
 	if (code === req.body.code) {
 		return res.json({ message: "You're verified successfully" });
 	}

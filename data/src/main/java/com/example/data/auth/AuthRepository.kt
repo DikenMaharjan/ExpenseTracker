@@ -2,7 +2,7 @@ package com.example.data.auth
 
 import com.example.data.model.AppUser
 import com.example.network.datasource.RemoteAuthDataSource
-
+import com.example.network.model.response.SignUpResponseDTO
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -11,12 +11,12 @@ class AuthRepository @Inject constructor(
     private val remoteAuthDataSource: RemoteAuthDataSource
 ) {
 
-    suspend fun signUp(userName: String, email: String, password: String): Result<Unit> {
+    suspend fun signUp(userName: String, email: String, password: String): Result<SignUpResponse> {
         return remoteAuthDataSource.signUp(
             userName = userName,
             email = email,
             password = password
-        )
+        ).map(SignUpResponseDTO::toSignUpResponse)
     }
 
     suspend fun signIn(email: String, password: String): Result<Unit> {

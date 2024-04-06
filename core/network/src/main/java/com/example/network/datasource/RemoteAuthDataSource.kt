@@ -3,6 +3,7 @@ package com.example.network.datasource
 import com.example.network.api.MoneyTrackApi
 import com.example.network.model.request.SignInRequest
 import com.example.network.model.request.SignUpRequest
+import com.example.network.model.response.SignUpResponseDTO
 import com.example.network.utils.SafeApiCall
 import javax.inject.Inject
 
@@ -21,7 +22,7 @@ class RemoteAuthDataSource @Inject constructor(
         }
     }
 
-    suspend fun signUp(userName: String, email: String, password: String): Result<Unit> {
+    suspend fun signUp(userName: String, email: String, password: String): Result<SignUpResponseDTO> {
         return safeApiCall {
             moneyTrackApi.signUp(
                 signUpRequest = SignUpRequest(

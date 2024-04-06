@@ -5,6 +5,9 @@ import androidx.compose.animation.slideOutHorizontally
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
+import com.example.moneytrack.auth.otp.VerificationType
+import com.example.moneytrack.auth.otp.navigateToOtpVerification
+import com.example.moneytrack.navigation.clearStackNavOptions
 
 const val SIGN_UP_ROUTE = "SignUpRoute"
 
@@ -22,7 +25,13 @@ fun NavGraphBuilder.signUpScreen(
     ) {
         SignUpScreen(
             navigateBack = navController::navigateUp,
-            navigateToOtpVerification = {}
+            navigateToOtpVerification = { token ->
+                navController.navigateToOtpVerification(
+                    token = token,
+                    verificationType = VerificationType.EmailVerification,
+                    navOptions = clearStackNavOptions
+                )
+            }
         )
     }
 }

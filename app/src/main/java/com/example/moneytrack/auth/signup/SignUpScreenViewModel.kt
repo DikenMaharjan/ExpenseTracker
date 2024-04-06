@@ -12,6 +12,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+private const val TAG = "SignUpScreenViewModel"
+
 @HiltViewModel
 class SignUpScreenViewModel @Inject constructor(
     private val authRepository: AuthRepository
@@ -33,8 +35,8 @@ class SignUpScreenViewModel @Inject constructor(
             showLoading(false)
 
             response
-                .onSuccess {
-                    _state.update { it.copy(signUpSuccess = true) }
+                .onSuccess { signUpResponse ->
+                    _state.update { it.copy(signUpToken = signUpResponse.token) }
                 }.onFailure {
                     fireErrorMsg(it.errorMsg)
                 }
@@ -42,12 +44,12 @@ class SignUpScreenViewModel @Inject constructor(
     }
 
     fun onSignUpSuccessHandled() {
-        _state.update { it.copy(signUpSuccess = false) }
+        _state.update { it.copy(signUpToken = null) }
     }
 
     @Immutable
     data class State(
-        val signUpSuccess: Boolean = false
+        val signUpToken: String? = null
     )
 
 }
