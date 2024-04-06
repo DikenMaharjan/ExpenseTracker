@@ -21,4 +21,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "MoneyTrack"
 include(":app")
- 
+include(":data")
