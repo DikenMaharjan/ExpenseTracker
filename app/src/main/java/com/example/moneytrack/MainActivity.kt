@@ -1,27 +1,26 @@
 package com.example.moneytrack
 
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.moneytrack.navigation.ROOT
+import com.example.moneytrack.navigation.appGraph
 import com.example.moneytrack.ui.theme.MoneyTrackTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         enableEdgeToEdge()
-        super.onCreate(savedInstanceState, persistentState)
+        super.onCreate(savedInstanceState)
         setContent {
             MoneyTrackTheme {
                 AppContent()
@@ -38,11 +37,8 @@ fun AppContent(
     NavHost(
         navController = navController,
         modifier = modifier.fillMaxSize(),
-        startDestination = "test"
+        startDestination = ROOT
     ) {
-        composable("test") {
-            Text("Hello")
-        }
+        appGraph(navController)
     }
-
 }

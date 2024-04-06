@@ -1,0 +1,109 @@
+package com.example.notesing.core.components.textfield
+
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.DividerDefaults
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.LocalContentColor
+import androidx.compose.material3.LocalTextStyle
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.SolidColor
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.input.VisualTransformation
+import com.example.moneytrack.ui.theme.LocalDimens
+
+@Composable
+fun AppTextField(
+    modifier: Modifier = Modifier,
+    textFieldState: AppTextFieldState,
+    title: String,
+    enabled: Boolean = true,
+    singleLine: Boolean = true,
+    maxLines: Int = 4,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    textStyle: TextStyle = LocalTextStyle.current,
+    keyboardActions: KeyboardActions? = null
+) = AppTextField(
+    modifier = modifier,
+    title = title,
+    value = textFieldState.text,
+    placeHolder = textFieldState.hint,
+    isError = textFieldState.isError && textFieldState.highlightError,
+    onValueChange = textFieldState::updateText,
+    enabled = enabled,
+    singleLine = singleLine,
+    maxLines = maxLines,
+    visualTransformation = visualTransformation,
+    keyboardOptions = keyboardOptions.copy(keyboardType = textFieldState.textType.keyboardType),
+    textStyle = textStyle,
+    keyboardActions = keyboardActions
+)
+
+@Composable
+fun AppTextField(
+    modifier: Modifier = Modifier,
+    title: String,
+    value: String,
+    placeHolder: String,
+    isError: Boolean,
+    enabled: Boolean = true,
+    singleLine: Boolean = true,
+    maxLines: Int = 4,
+    visualTransformation: VisualTransformation = VisualTransformation.None,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    onValueChange: (String) -> Unit,
+    textStyle: TextStyle = LocalTextStyle.current,
+    keyboardActions: KeyboardActions? = null
+) {
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+    Column {
+        Text(text = title)
+        BasicTextField(
+            modifier = modifier
+                .fillMaxWidth(),
+            textStyle = MaterialTheme.typography.labelLarge.copy(
+                color = LocalContentColor.current
+            ).merge(textStyle),
+            value = value,
+            onValueChange = onValueChange,
+            enabled = enabled,
+            singleLine = singleLine,
+            maxLines = maxLines,
+            visualTransformation = visualTransformation,
+            keyboardOptions = keyboardOptions,
+            keyboardActions = keyboardActions ?: KeyboardActions { keyboardController?.hide() },
+            cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
+            decorationBox = {
+                Column {
+                    Box(
+                        modifier = Modifier.padding(vertical = LocalDimens.current.dimen8)
+                    ) {
+                        it.invoke()
+                        if (value.isEmpty()) {
+                            Text(
+                                text = placeHolder,
+                                style = MaterialTheme.typography.labelLarge.merge(textStyle).copy(
+                                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                                )
+                            )
+                        }
+                    }
+                    HorizontalDivider(
+                        color = if (isError) MaterialTheme.colorScheme.error else DividerDefaults.color
+                    )
+                }
+            }
+        )
+    }
+}

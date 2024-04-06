@@ -17,6 +17,7 @@ hilt-navigation-compose = "1.2.0"
 ksp = "1.9.23-1.0.19"
 
 compose-compiler = "1.5.11"
+navigationCompose = "2.7.7"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -35,6 +36,9 @@ compose-material = { module = "androidx.compose.material3:material3" }
 compose-foundation = { module = "androidx.compose.foundation:foundation" }
 compose-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-compose" }
 material-icons = { module = "androidx.compose.material:material-icons-extended" }
+
+androidx-navigation-compose = { module = "androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+
 
 hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
 hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }

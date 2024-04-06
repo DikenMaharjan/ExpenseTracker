@@ -5,12 +5,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.SideEffect
+import androidx.compose.runtime.remember
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
 @Composable
 fun MoneyTrackTheme(
     darkTheme: Boolean = false,
+    dimens: Dimens = remember {
+        Dimens()
+    },
     content: @Composable() () -> Unit
 ) {
     val (colorScheme, extendedScheme) = when {
@@ -26,7 +30,8 @@ fun MoneyTrackTheme(
         }
     }
     CompositionLocalProvider(
-        LocalExtendedColorScheme provides extendedScheme
+        LocalExtendedColorScheme provides extendedScheme,
+        LocalDimens provides dimens
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
