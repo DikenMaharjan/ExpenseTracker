@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -24,7 +25,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.moneytrack.core.components.AppButton
 import com.example.moneytrack.ui.theme.LocalDimens
 import com.example.notesing.core.components.textfield.AppTextField
-import com.example.notesing.core.components.textfield.rememberTextFieldState
+import com.example.moneytrack.core.components.textfield.rememberTextFieldState
 
 @Composable
 fun SignUpScreen(
@@ -44,6 +45,7 @@ fun SignUpScreen(
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.background)
             .verticalScroll(rememberScrollState())
+            .imePadding()
             .padding(24.dp),
         verticalArrangement = Arrangement.SpaceBetween,
         horizontalAlignment = Alignment.Start

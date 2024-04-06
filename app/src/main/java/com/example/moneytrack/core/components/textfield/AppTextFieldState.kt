@@ -1,4 +1,4 @@
-package com.example.notesing.core.components.textfield
+package com.example.moneytrack.core.components.textfield
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
