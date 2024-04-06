@@ -1,12 +1,20 @@
 [versions]
 agp = "8.5.0-alpha02"
-kotlin = "1.9.0"
+kotlin = "1.9.23"
 coreKtx = "1.12.0"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
 appcompat = "1.6.1"
 material = "1.11.0"
+
+compose-bom = "2024.04.00"
+
+
+hilt = "2.49"
+hilt-navigation-compose = "1.2.0"
+
+ksp = "1.9.23-1.0.19"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -16,7 +24,24 @@ androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-co
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 
+compose-bom = { module = "androidx.compose:compose-bom", version.ref = "compose-bom" }
+compose-ui = { module = "androidx.compose.ui:ui" }
+compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
+compose-runtime = { module = "androidx.compose.runtime:runtime" }
+compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
+compose-material = { module = "androidx.compose.material3:material3" }
+compose-foundation = { module = "androidx.compose.foundation:foundation" }
+compose-lifecycle = { module = "androidx.lifecycle:lifecycle-runtime-compose" }
+material-icons = { module = "androidx.compose.material:material-icons-extended" }
+
+hilt = { module = "com.google.dagger:hilt-android", version.ref = "hilt" }
+hilt-compiler = { module = "com.google.dagger:hilt-android-compiler", version.ref = "hilt" }
+hilt-navigation-compose = { module = "androidx.hilt:hilt-navigation-compose", version.ref = "hilt-navigation-compose" }
+
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 jetbrains-kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "ksp" }
 
