@@ -4,10 +4,13 @@ import androidx.activity.compose.LocalOnBackPressedDispatcherOwner
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -16,7 +19,6 @@ import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
@@ -26,60 +28,41 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import com.example.moneytrack.core.model.ScreenState
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun Screen(
     modifier: Modifier = Modifier,
     screenState: ScreenState = ScreenState(),
     showBack: Boolean = false,
     title: String? = null,
-    content: @Composable () -> Unit
+    content: @Composable BoxScope.() -> Unit
 ) {
-    val localBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current
     Box(
         modifier = modifier
             .fillMaxSize()
             .systemBarsPadding(),
-        contentAlignment = Alignment.Center
+        contentAlignment = Alignment.TopStart
     ) {
-        Scaffold(
-            modifier = Modifier.fillMaxSize(),
-            topBar = {
-                if (showBack || title != null) {
-                    TopAppBar(
-                        title = {
-                            if (title != null) {
-                                Text(text = title)
-                            }
-                        },
-                        navigationIcon = {
-                            if (showBack) {
-                                IconButton(
-                                    onClick = {
-                                        localBackPressedDispatcher?.onBackPressedDispatcher?.onBackPressed()
-                                    }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
-                                        contentDescription = "Back Icon"
-                                    )
-                                }
-                            }
-                        }
-                    )
-                }
-            },
-            contentWindowInsets = rememberZeroWindowInsets()
-        ) { padding ->
-            Box(
-                modifier = Modifier.padding(padding),
-                contentAlignment = Alignment.Center
-            ) {
-                content()
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+            verticalArrangement = Arrangement.Top
+        ) {
+            if (showBack || title != null) {
+                ScreenTopBar(
+                    modifier = Modifier.fillMaxWidth(),
+                    title = title,
+                    showBack = showBack
+                )
             }
+            Box(
+                contentAlignment = Alignment.Center,
+                content = content
+            )
         }
         if (screenState.isLoading) {
-            TouchConsumingLoading()
+            TouchConsumingLoading(
+                modifier = Modifier.align(Alignment.Center)
+            )
         }
         val errorMsg = screenState.errorMsg
         if (errorMsg != null) {
@@ -91,12 +74,48 @@ fun Screen(
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+private fun ScreenTopBar(
+    modifier: Modifier = Modifier,
+    title: String?,
+    showBack: Boolean
+) {
+    val localBackPressedDispatcher = LocalOnBackPressedDispatcherOwner.current
+
+    TopAppBar(
+        modifier = modifier,
+        title = {
+            if (title != null) {
+                Text(text = title)
+            }
+        },
+        navigationIcon = {
+            if (showBack) {
+                IconButton(
+                    onClick = {
+                        localBackPressedDispatcher?.onBackPressedDispatcher?.onBackPressed()
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.AutoMirrored.Default.ArrowBack,
+                        contentDescription = "Back Icon"
+                    )
+                }
+            }
+        },
+        windowInsets = rememberZeroWindowInsets()
+    )
+}
+
+
 @Composable
 fun rememberZeroWindowInsets(): WindowInsets {
     return remember {
         WindowInsets(0, 0, 0, 0)
     }
 }
+
 
 @Composable
 private fun TouchConsumingLoading(
