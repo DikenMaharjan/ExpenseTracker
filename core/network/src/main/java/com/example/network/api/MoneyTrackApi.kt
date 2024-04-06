@@ -1,13 +1,20 @@
 package com.example.network.api
 
-import com.example.network.model.login.LoginRequest
+import com.example.network.model.request.SignInRequest
+import com.example.network.model.request.SignUpRequest
+import retrofit2.Response
 import retrofit2.http.Body
 import retrofit2.http.POST
 
 interface MoneyTrackApi {
 
-    @POST("/api/login")
-    suspend fun login(
-        @Body loginRequest: LoginRequest
-    ): Unit
+    @POST("/api/signIn")
+    suspend fun signIn(
+        @Body signInRequest: SignInRequest
+    ): Response<Unit>
+
+    @POST("/api/signUp")
+    suspend fun signUp(
+        @Body signUpRequest: SignUpRequest
+    ): Response<Unit>
 }

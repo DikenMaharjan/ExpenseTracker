@@ -1,16 +1,31 @@
 package com.example.network.datasource
 
 import com.example.network.api.MoneyTrackApi
-import com.example.network.model.login.LoginRequest
+import com.example.network.model.request.SignInRequest
+import com.example.network.model.request.SignUpRequest
+import com.example.network.utils.SafeApiCall
 import javax.inject.Inject
 
 class RemoteAuthDataSource @Inject constructor(
-    private val moneyTrackApi: MoneyTrackApi
+    private val moneyTrackApi: MoneyTrackApi,
+    private val safeApiCall: SafeApiCall
 ) {
-    suspend fun login(email: String, password: String): Result<Unit> {
-        return kotlin.runCatching {
-            moneyTrackApi.login(
-                loginRequest = LoginRequest(
+    suspend fun signIn(email: String, password: String): Result<Unit> {
+        return safeApiCall {
+            moneyTrackApi.signIn(
+                signInRequest = SignInRequest(
+                    email = email,
+                    password = password
+                )
+            )
+        }
+    }
+
+    suspend fun signUp(userName: String, email: String, password: String): Result<Unit> {
+        return safeApiCall {
+            moneyTrackApi.signUp(
+                signUpRequest = SignUpRequest(
+                    userName = userName,
                     email = email,
                     password = password
                 )

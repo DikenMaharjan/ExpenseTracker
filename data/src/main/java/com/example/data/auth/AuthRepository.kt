@@ -12,20 +12,22 @@ class AuthRepository @Inject constructor(
 ) {
 
     suspend fun signUp(userName: String, email: String, password: String): Result<Unit> {
-        return kotlin.runCatching { }
+        return remoteAuthDataSource.signUp(
+            userName = userName,
+            email = email,
+            password = password
+        )
     }
 
     suspend fun signIn(email: String, password: String): Result<Unit> {
-        return remoteAuthDataSource.login(
+        return remoteAuthDataSource.signIn(
             email = email,
             password = password
         )
     }
 
     fun signOut(): Result<Unit> {
-        return runCatching {
-
-        }
+        return kotlin.runCatching { }
     }
 
     sealed interface AuthState {

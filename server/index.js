@@ -19,7 +19,7 @@ const sendNovuNotification = async (recipient, verificationCode) => {
 	}
 };
 
-app.post("/api/login", (req, res) => {
+app.post("/api/signIn", (req, res) => {
 	const { email, password } = req.body;
 	let result = users.filter(
 		(user) => user.email === email && user.password === password
@@ -43,7 +43,7 @@ app.post("/api/login", (req, res) => {
 		});
 });
 
-app.post("/api/register", (req, res) => {
+app.post("/api/signUp", (req, res) => {
 	const { email, password, tel, username } = req.body;
 	let result = users.filter((user) => user.email === email || user.tel === tel);
 	if (result.length === 0) {
@@ -53,7 +53,7 @@ app.post("/api/register", (req, res) => {
 			message: "Account created successfully!",
 		});
 	}
-	res.json({
+	res.status(409).send({
 		error_message: "User already exists",
 	});
 });

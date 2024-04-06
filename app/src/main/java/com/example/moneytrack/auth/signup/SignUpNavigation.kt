@@ -21,7 +21,8 @@ fun NavGraphBuilder.signUpScreen(
         }
     ) {
         SignUpScreen(
-            navigateBack = navController::navigateUp
+            navigateBack = navController::navigateUp,
+            navigateToOtpVerification = {}
         )
     }
 }
