@@ -22,3 +22,7 @@ dependencyResolutionManagement {
 rootProject.name = "MoneyTrack"
 include(":app")
 include(":data")
+include(":core:database")
+include(":core:network")
+include(":core:datastore")
+include(":core:utils")
