@@ -54,6 +54,8 @@ dependencies {
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
 
+    implementation(libs.vico.compose)
+    implementation(libs.vico.compose.m3)
 
     implementation(platform(libs.compose.bom))
     implementation(libs.compose.ui)

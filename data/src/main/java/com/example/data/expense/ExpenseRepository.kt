@@ -24,16 +24,40 @@ class ExpenseRepository @Inject constructor(
     private val userDataDataSource: UserDataDataSource,
 ) {
 
+    val expenses: Flow<List<Expense>> = getExpense { userId ->
+        localExpenseDataSource.getAllExpenses(userId)
+    }
+
+
     @OptIn(ExperimentalCoroutinesApi::class)
-    val expenses: Flow<List<Expense>> = userDataDataSource
-        .loggedInUserID
-        .flatMapLatest { userId ->
-            if (userId == null) {
-                flowOf(listOf())
-            } else {
-                localExpenseDataSource.getAllExpenses(userId)
-            }
-        }.map { it.map(ExpenseAndCategory::toModel) }
+    fun getExpense(query: (userId: String) -> Flow<List<ExpenseAndCategory>>): Flow<List<Expense>> {
+        return userDataDataSource
+            .loggedInUserID
+            .flatMapLatest { userId ->
+                if (userId == null) {
+                    flowOf(listOf())
+                } else {
+                    query(userId)
+                }
+            }.map { it.map(ExpenseAndCategory::toModel) }
+    }
+
+    fun getLastWeekExpenses(): Flow<List<Expense>> {
+        val today = LocalDateTime.now().plusDays(1)
+        val weekAgo = today.minusWeeks(1)
+        return getExpenses(from = weekAgo, end = today)
+    }
+
+
+    private fun getExpenses(from: LocalDateTime, end: LocalDateTime): Flow<List<Expense>> {
+        return getExpense { userId ->
+            localExpenseDataSource.getExpenses(
+                userID = userId,
+                start = from,
+                end = end
+            )
+        }
+    }
 
     suspend fun insertExpense(
         name: String,

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,7 +30,10 @@ import com.example.data.model.AppUser
 import com.example.data.model.Expense
 import com.example.moneytrack.core.components.AppUserIcon
 import com.example.moneytrack.home.dashboard.components.GroupedExpenseCard
+import com.example.moneytrack.home.dashboard.components.WeeklyChart
 import com.example.moneytrack.ui.theme.LocalDimens
+import com.patrykandpatrick.vico.core.model.CartesianChartModelProducer
+import java.time.DayOfWeek
 import java.time.LocalDate
 
 @Composable
@@ -49,7 +53,9 @@ fun DashboardScreen(
                     navigateToAddExpenseBottomSheet = navigateToAddExpenseBottomSheet,
                     appUser = auth.appUser,
                     expensesMap = expensesMap,
-                    navigateToProfile = navigateToProfile
+                    navigateToProfile = navigateToProfile,
+                    modelProducer = viewModel.weekGraphProducer,
+                    orderedDays = viewModel.orderedDays
                 )
             }
 
@@ -68,7 +74,9 @@ private fun DashboardScreenContent(
     navigateToAddExpenseBottomSheet: () -> Unit,
     appUser: AppUser,
     expensesMap: Map<LocalDate, List<Expense>>,
-    navigateToProfile: () -> Unit
+    navigateToProfile: () -> Unit,
+    modelProducer: CartesianChartModelProducer,
+    orderedDays: List<DayOfWeek>
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -103,6 +111,11 @@ private fun DashboardScreenContent(
             contentPadding = PaddingValues(LocalDimens.current.dimen24)
         ) {
             item {
+                ExpensesHistoryGraph(
+                    orderedDays = orderedDays, modelProducer = modelProducer
+                )
+            }
+            item {
                 Spacer(modifier = Modifier.height(LocalDimens.current.dimen12))
             }
             items(expensesMap.keys.toList()) { date ->
@@ -116,4 +129,19 @@ private fun DashboardScreenContent(
             }
         }
     }
+}
+
+
+@Composable
+fun ExpensesHistoryGraph(
+    modelProducer: CartesianChartModelProducer,
+    orderedDays: List<DayOfWeek>
+) {
+    WeeklyChart(
+        modelProducer = modelProducer,
+        modifier = Modifier
+            .height(LocalDimens.current.dimen200)
+            .fillMaxWidth(),
+        orderedDays = orderedDays
+    )
 }
