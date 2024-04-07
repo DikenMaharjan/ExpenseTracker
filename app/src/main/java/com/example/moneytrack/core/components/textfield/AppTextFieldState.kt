@@ -80,5 +80,6 @@ enum class TextType(val keyboardType: KeyboardType, val rule: Rule) {
     Password(KeyboardType.Text, Rules.requiredRule),
     Username(KeyboardType.Text, Rules.userNameRule),
     Amount(KeyboardType.Decimal, Rules.amountRule),
-    Email(KeyboardType.Email, Rules.emailRule)
+    Email(KeyboardType.Email, Rules.emailRule),
+    Category(KeyboardType.Text, Rules.requiredRule)
 }
