@@ -1,9 +1,15 @@
 package com.example.moneytrack.home.dashboard.components
 
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
+import com.example.moneytrack.ui.theme.LocalDimens
 import com.patrykandpatrick.vico.compose.axis.horizontal.rememberBottomAxis
 import com.patrykandpatrick.vico.compose.axis.vertical.rememberStartAxis
 import com.patrykandpatrick.vico.compose.chart.CartesianChartHost
@@ -29,7 +35,29 @@ import java.util.Locale
 
 
 @Composable
-fun WeeklyChart(
+fun WeeklyExpenseGraph(
+    modifier: Modifier = Modifier,
+    modelProducer: CartesianChartModelProducer,
+    orderedDays: List<DayOfWeek>
+) {
+    Column(
+        modifier = modifier,
+        verticalArrangement = Arrangement.spacedBy(LocalDimens.current.dimen12)
+    ) {
+        Text(text = "Weekly Expense", style = MaterialTheme.typography.titleMedium)
+        WeeklyChart(
+            modelProducer = modelProducer,
+            modifier = Modifier
+                .height(LocalDimens.current.dimen200)
+                .fillMaxWidth(),
+            orderedDays = orderedDays
+        )
+    }
+
+}
+
+@Composable
+private fun WeeklyChart(
     modelProducer: CartesianChartModelProducer,
     modifier: Modifier,
     orderedDays: List<DayOfWeek>
@@ -60,7 +88,7 @@ fun WeeklyChart(
             modelProducer = modelProducer,
             modifier = modifier,
             marker = null,
-            runInitialAnimation = true,
+            runInitialAnimation = false,
             horizontalLayout = HorizontalLayout.fullWidth(),
             zoomState = rememberVicoZoomState(zoomEnabled = false),
             scrollState = rememberVicoScrollState(scrollEnabled = false)
