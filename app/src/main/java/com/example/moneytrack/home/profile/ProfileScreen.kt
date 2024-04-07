@@ -20,6 +20,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.data.auth.AuthRepository
 import com.example.data.model.AppUser
 import com.example.moneytrack.core.components.AppDialog
+import com.example.moneytrack.core.components.ScreenTopBar
 import com.example.moneytrack.home.profile.components.ProfileRowOption
 import com.example.moneytrack.home.profile.components.ProfileUserInfo
 import com.example.utils.extensions.showShortToast
@@ -87,6 +88,12 @@ fun ProfileScreenContent(
             .systemBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        item {
+            ScreenTopBar(
+                showBack = true,
+                title = null
+            )
+        }
         item {
             ProfileUserInfo(appUser = appUser)
         }

@@ -76,7 +76,7 @@ fun Screen(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun ScreenTopBar(
+fun ScreenTopBar(
     modifier: Modifier = Modifier,
     title: String?,
     showBack: Boolean
