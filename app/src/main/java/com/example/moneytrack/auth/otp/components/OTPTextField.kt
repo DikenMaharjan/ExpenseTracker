@@ -36,6 +36,7 @@ fun OTPTextField(
         modifier = modifier,
         value = otpCode,
         onValueChange = onValueChange,
+        singleLine = true,
         interactionSource = otpInteractionSource
     ) {
         Row(

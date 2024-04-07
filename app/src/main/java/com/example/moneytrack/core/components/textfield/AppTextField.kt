@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.foundation.text2.input.InputTransformation.Companion.keyboardOptions
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalContentColor
@@ -147,6 +146,7 @@ fun OutlinedAppTextField(
         placeholder = {
             Text(text = textFieldState.hint)
         },
+        singleLine = true,
         keyboardOptions = KeyboardOptions.Default.copy(keyboardType = textFieldState.textType.keyboardType),
     )
 }
