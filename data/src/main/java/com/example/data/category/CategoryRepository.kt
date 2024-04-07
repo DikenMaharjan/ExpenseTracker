@@ -1,6 +1,7 @@
 package com.example.data.category
 
 import com.example.data.model.Category
+import com.example.data.model.toModel
 import com.example.database.datasource.LocalCategoryDataSource
 import com.example.database.entity.CategoryEntity
 import com.example.datastore.proto.UserDataDataSource
@@ -50,7 +51,3 @@ class CategoryRepository @Inject constructor(
     }
 }
 
-private fun CategoryEntity.toModel() = Category(
-    name = this.name,
-    id = this.id
-)

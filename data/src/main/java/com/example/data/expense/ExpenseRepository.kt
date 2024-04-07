@@ -2,8 +2,10 @@ package com.example.data.expense
 
 import com.example.data.model.Category
 import com.example.data.model.Expense
+import com.example.data.model.toModel
 import com.example.database.datasource.LocalExpenseDataSource
 import com.example.database.entity.ExpenseEntity
+import com.example.database.relation.ExpenseAndCategory
 import com.example.datastore.proto.UserDataDataSource
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.NonCancellable
@@ -23,7 +25,7 @@ class ExpenseRepository @Inject constructor(
 ) {
 
     @OptIn(ExperimentalCoroutinesApi::class)
-    private val expenses: Flow<List<Expense>> = userDataDataSource
+    val expenses: Flow<List<Expense>> = userDataDataSource
         .loggedInUserID
         .flatMapLatest { userId ->
             if (userId == null) {
@@ -31,7 +33,7 @@ class ExpenseRepository @Inject constructor(
             } else {
                 localExpenseDataSource.getAllExpenses(userId)
             }
-        }.map { it.map(ExpenseEntity::toModel) }
+        }.map { it.map(ExpenseAndCategory::toModel) }
 
     suspend fun insertExpense(
         name: String,
@@ -56,9 +58,3 @@ class ExpenseRepository @Inject constructor(
 
 }
 
-private fun ExpenseEntity.toModel() = Expense(
-    name = this.name,
-    createdDate = this.createdDate,
-    id = this.userId,
-    amount = this.expense
-)
