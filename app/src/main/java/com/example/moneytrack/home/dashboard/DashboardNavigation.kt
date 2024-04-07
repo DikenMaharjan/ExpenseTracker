@@ -7,12 +7,14 @@ const val DASHBOARD_SCREEN_ROUTE = "DashboardScreenRoute"
 
 fun NavGraphBuilder.dashboardScreen(
     navigateToAuth: () -> Unit,
-    navigateToAddExpenseBottomSheet: () -> Unit
+    navigateToAddExpenseBottomSheet: () -> Unit,
+    navigateToProfile: () -> Unit
 ) {
     composable(DASHBOARD_SCREEN_ROUTE) {
         DashboardScreen(
             navigateToAuth = navigateToAuth,
-            navigateToAddExpenseBottomSheet = navigateToAddExpenseBottomSheet
+            navigateToAddExpenseBottomSheet = navigateToAddExpenseBottomSheet,
+            navigateToProfile = navigateToProfile
         )
     }
 }

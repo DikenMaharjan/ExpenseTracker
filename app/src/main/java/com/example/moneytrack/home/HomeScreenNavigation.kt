@@ -8,6 +8,8 @@ import com.example.moneytrack.home.add_expense.navigation.addExpenseBottomSheet
 import com.example.moneytrack.home.add_expense.navigation.navigateToAddExpenseBottomSheet
 import com.example.moneytrack.home.dashboard.DASHBOARD_SCREEN_ROUTE
 import com.example.moneytrack.home.dashboard.dashboardScreen
+import com.example.moneytrack.home.profile.navigation.navigateToProfile
+import com.example.moneytrack.home.profile.navigation.profileScreen
 import com.example.moneytrack.navigation.clearStackNavOptions
 
 const val HOME_ROOT = "HomeRoot"
@@ -21,11 +23,13 @@ fun NavGraphBuilder.homeGraph(
     ) {
         dashboardScreen(
             navigateToAuth = navController::navigateToAuth,
-            navigateToAddExpenseBottomSheet = navController::navigateToAddExpenseBottomSheet
+            navigateToAddExpenseBottomSheet = navController::navigateToAddExpenseBottomSheet,
+            navigateToProfile = navController::navigateToProfile
         )
         addExpenseBottomSheet(
-            closeBottomSheet= navController::navigateUp
+            closeBottomSheet = navController::navigateUp
         )
+        profileScreen()
     }
 }
 

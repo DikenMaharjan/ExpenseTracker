@@ -1,5 +1,6 @@
 package com.example.moneytrack.home.dashboard
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
@@ -36,7 +37,8 @@ fun DashboardScreen(
     modifier: Modifier = Modifier,
     viewModel: DashboardScreenViewModel = hiltViewModel(),
     navigateToAuth: () -> Unit,
-    navigateToAddExpenseBottomSheet: () -> Unit
+    navigateToAddExpenseBottomSheet: () -> Unit,
+    navigateToProfile: () -> Unit
 ) {
     val authState by viewModel.authState.collectAsStateWithLifecycle()
     val expensesMap by viewModel.groupedExpenses.collectAsStateWithLifecycle()
@@ -46,7 +48,8 @@ fun DashboardScreen(
                 DashboardScreenContent(
                     navigateToAddExpenseBottomSheet = navigateToAddExpenseBottomSheet,
                     appUser = auth.appUser,
-                    expensesMap = expensesMap
+                    expensesMap = expensesMap,
+                    navigateToProfile = navigateToProfile
                 )
             }
 
@@ -64,7 +67,8 @@ private fun DashboardScreenContent(
     modifier: Modifier = Modifier,
     navigateToAddExpenseBottomSheet: () -> Unit,
     appUser: AppUser,
-    expensesMap: Map<LocalDate, List<Expense>>
+    expensesMap: Map<LocalDate, List<Expense>>,
+    navigateToProfile: () -> Unit
 ) {
     Scaffold(
         modifier = modifier.fillMaxSize(),
@@ -81,7 +85,9 @@ private fun DashboardScreenContent(
                     title = { Text(text = "All Entries") },
                     actions = {
                         AppUserIcon(
-                            modifier = Modifier.padding(LocalDimens.current.dimen8),
+                            modifier = Modifier
+                                .padding(LocalDimens.current.dimen8)
+                                .clickable(onClick = navigateToProfile),
                             user = appUser,
                             style = MaterialTheme.typography.headlineMedium
                         )
