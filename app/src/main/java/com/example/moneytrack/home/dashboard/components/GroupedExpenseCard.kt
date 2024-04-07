@@ -33,7 +33,7 @@ fun GroupedExpenseCard(
     Surface(
         modifier = modifier,
         shape = MaterialTheme.shapes.medium,
-        shadowElevation = LocalDimens.current.dimen4
+        tonalElevation = LocalDimens.current.dimen2
     ) {
         Column(
             modifier = Modifier.padding(LocalDimens.current.dimen12)
