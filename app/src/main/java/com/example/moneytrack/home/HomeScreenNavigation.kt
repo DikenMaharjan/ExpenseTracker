@@ -23,7 +23,9 @@ fun NavGraphBuilder.homeGraph(
             navigateToAuth = navController::navigateToAuth,
             navigateToAddExpenseBottomSheet = navController::navigateToAddExpenseBottomSheet
         )
-        addExpenseBottomSheet()
+        addExpenseBottomSheet(
+            closeBottomSheet= navController::navigateUp
+        )
     }
 }
 

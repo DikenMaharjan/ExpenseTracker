@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Card
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -30,8 +30,10 @@ fun GroupedExpenseCard(
     date: LocalDate,
     expenses: List<Expense>
 ) {
-    Card(
-        modifier = modifier.padding(LocalDimens.current.dimen12),
+    Surface(
+        modifier = modifier,
+        shape = MaterialTheme.shapes.medium,
+        shadowElevation = LocalDimens.current.dimen4
     ) {
         Column(
             modifier = Modifier.padding(LocalDimens.current.dimen12)
@@ -93,7 +95,7 @@ private fun ExpenseRow(
 }
 
 
-@Preview
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun GroupedExpenseCardPreview() {
     MoneyTrackTheme {

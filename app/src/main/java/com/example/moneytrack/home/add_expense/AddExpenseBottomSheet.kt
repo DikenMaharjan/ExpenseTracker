@@ -32,7 +32,8 @@ import com.example.moneytrack.ui.theme.MoneyTrackTheme
 @Composable
 fun AddExpenseBottomSheet(
     modifier: Modifier = Modifier,
-    viewModel: AddExpenseBottomSheetViewModel = hiltViewModel()
+    viewModel: AddExpenseBottomSheetViewModel = hiltViewModel(),
+    closeBottomSheet: () -> Unit
 ) {
     val expenseTextField = rememberTextFieldState(hint = "Expense Name")
     val amountTextField = rememberTextFieldState(hint = "Enter Amount", textType = TextType.Amount)
@@ -46,7 +47,8 @@ fun AddExpenseBottomSheet(
         categories = categories,
         addExpense = viewModel::addExpense,
         state = state,
-        selectCategory = viewModel::selectCategory
+        selectCategory = viewModel::selectCategory,
+        closeBottomSheet = closeBottomSheet
     )
 
 }
@@ -59,7 +61,8 @@ private fun AddExpenseBottomSheetContent(
     categories: List<Category>,
     addExpense: (name: String, amount: String) -> Unit,
     state: AddExpenseBottomSheetViewModel.State,
-    selectCategory: (Category) -> Unit
+    selectCategory: (Category) -> Unit,
+    closeBottomSheet: () -> Unit
 ) {
     val localKeyboardController = LocalSoftwareKeyboardController.current
     Column(
@@ -90,6 +93,7 @@ private fun AddExpenseBottomSheetContent(
                 expenseTextField.updateText("")
                 amountTextField.updateText("")
                 localKeyboardController?.hide()
+                closeBottomSheet()
             },
             text = "Add",
             isEnabled = isEnabled
@@ -144,7 +148,8 @@ private fun AddExpenseBottomSheetContentPreview() {
             state = AddExpenseBottomSheetViewModel.State(
                 selectedCategory = selectedCategory
             ),
-            selectCategory = {}
+            selectCategory = {},
+            closeBottomSheet = {}
         )
     }
 }

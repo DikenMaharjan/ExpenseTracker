@@ -86,4 +86,4 @@ class AuthRepository @Inject constructor(
 private fun UserDataProto?.toAuthState() =
     if (this == null) AuthRepository.AuthState.LoggedOut else AuthRepository.AuthState.LoggedIn(this.toAppUser())
 
-private fun UserDataProto.toAppUser() = AppUser(name = this.name)
+private fun UserDataProto.toAppUser() = AppUser(name = this.name, id = this.name)

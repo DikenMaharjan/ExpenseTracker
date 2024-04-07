@@ -9,9 +9,13 @@ import com.google.accompanist.navigation.material.bottomSheet
 private const val ADD_EXPENSE_ROUTE = "AddExpenseRoute"
 
 @OptIn(ExperimentalMaterialNavigationApi::class)
-fun NavGraphBuilder.addExpenseBottomSheet() {
+fun NavGraphBuilder.addExpenseBottomSheet(
+    closeBottomSheet: () -> Unit
+) {
     bottomSheet(ADD_EXPENSE_ROUTE) {
-        AddExpenseBottomSheet()
+        AddExpenseBottomSheet(
+            closeBottomSheet = closeBottomSheet
+        )
     }
 }
 
