@@ -23,6 +23,7 @@ import com.example.moneytrack.auth.signin.components.SignInTextFields
 import com.example.moneytrack.auth.signin.components.SignInTitle
 import com.example.moneytrack.core.components.Screen
 import com.example.moneytrack.core.components.textfield.AppTextFieldState
+import com.example.moneytrack.core.components.textfield.TextType
 import com.example.moneytrack.core.components.textfield.rememberTextFieldState
 import com.example.moneytrack.core.model.ScreenState
 import com.example.moneytrack.ui.theme.LocalDimens
@@ -37,8 +38,9 @@ fun SignInScreen(
     navigateToHome: () -> Unit
 ) {
     val emailTextFieldState =
-        rememberTextFieldState(hint = "Enter your email")
-    val passwordTextFieldState = rememberTextFieldState(hint = "Password")
+        rememberTextFieldState(hint = "Enter your email", textType = TextType.Email)
+    val passwordTextFieldState =
+        rememberTextFieldState(hint = "Password", textType = TextType.Password)
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val state by viewModel.state.collectAsStateWithLifecycle()
 
