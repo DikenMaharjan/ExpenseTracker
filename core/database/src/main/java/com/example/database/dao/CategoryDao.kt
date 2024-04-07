@@ -11,8 +11,10 @@ const val DEFAULT_CATEGORIES_USER_ID = "default_categories"
 @Dao
 interface CategoryDao {
 
-    @Query("Select * from CategoryEntity where createdUser = :userID || createdUser = :$DEFAULT_CATEGORIES_USER_ID")
-    fun getAllCategoriesOfUser(userID: String): Flow<List<CategoryEntity>>
+    @Query("""Select * from CategoryEntity where createdUser = :userID or createdUser = "$DEFAULT_CATEGORIES_USER_ID"""")
+    fun getAllCategoriesOfUser(
+        userID: String,
+    ): Flow<List<CategoryEntity>>
 
     @Query("Select count(*) from CategoryEntity")
     suspend fun getCategoryCount(): Int

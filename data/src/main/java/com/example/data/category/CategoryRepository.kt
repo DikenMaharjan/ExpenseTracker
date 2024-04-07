@@ -12,7 +12,10 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.withContext
 import java.util.UUID
 import javax.inject.Inject
+import javax.inject.Singleton
 
+
+@Singleton
 class CategoryRepository @Inject constructor(
     private val localCategoryDataSource: LocalCategoryDataSource,
     private val userDataDataSource: UserDataDataSource,

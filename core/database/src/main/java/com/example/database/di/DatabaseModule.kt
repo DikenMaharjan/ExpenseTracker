@@ -29,4 +29,10 @@ object DatabaseModule {
     fun providesExpenseDao(
         roomDatabase: MoneyTrackDatabase
     ) = roomDatabase.getExpenseDao()
+
+    @Provides
+    @Singleton
+    fun providesCategoryDao(
+        roomDatabase: MoneyTrackDatabase
+    ) = roomDatabase.getCategoryDao()
 }
