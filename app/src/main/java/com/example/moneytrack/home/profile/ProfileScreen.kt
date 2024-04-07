@@ -24,7 +24,8 @@ import com.example.moneytrack.home.profile.components.ProfileUserInfo
 @Composable
 fun ProfileScreen(
     modifier: Modifier = Modifier,
-    viewModel: ProfileScreenViewModel = hiltViewModel()
+    viewModel: ProfileScreenViewModel = hiltViewModel(),
+    navigateToAuth: () -> Unit
 ) {
     val authState by viewModel.authState.collectAsStateWithLifecycle()
     val isDarkMode by viewModel.isDarkMode.collectAsStateWithLifecycle()
@@ -39,6 +40,7 @@ fun ProfileScreen(
                     updateState = viewModel::updateState,
                     logOut = {
                         viewModel.logOut()
+                        navigateToAuth()
                     },
                     toggleTheme = viewModel::toggleTheme
                 )
@@ -106,8 +108,8 @@ fun ProfileScreenContent(
             title = "Log Out?",
             description = "Are you sure you want to log out?",
             onConfirm = {
-                logOut()
                 updateState(state.copy(isLogOutConfirmationShown = false))
+                logOut()
             },
             onDismiss = { updateState(state.copy(isLogOutConfirmationShown = false)) },
             confirmText = "Log Out",

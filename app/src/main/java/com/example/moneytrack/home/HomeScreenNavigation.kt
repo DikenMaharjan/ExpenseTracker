@@ -29,7 +29,9 @@ fun NavGraphBuilder.homeGraph(
         addExpenseBottomSheet(
             closeBottomSheet = navController::navigateUp
         )
-        profileScreen()
+        profileScreen(
+            navigateToAuth = navController::navigateToAuth
+        )
     }
 }
 

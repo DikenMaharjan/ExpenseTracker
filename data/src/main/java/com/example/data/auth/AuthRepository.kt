@@ -72,8 +72,10 @@ class AuthRepository @Inject constructor(
         return response.toUnitResult()
     }
 
-    fun signOut(): Result<Unit> {
-        return kotlin.runCatching { }
+    suspend fun signOut(): Result<Unit> {
+        return kotlin.runCatching {
+            userDataDataSource.clear()
+        }
     }
 
     sealed interface AuthState {

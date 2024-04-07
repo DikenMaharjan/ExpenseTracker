@@ -6,9 +6,13 @@ import androidx.navigation.compose.composable
 import com.example.moneytrack.home.profile.ProfileScreen
 
 const val PROFILE_ROUTE = "ProfileRoute"
-fun NavGraphBuilder.profileScreen() {
+fun NavGraphBuilder.profileScreen(
+    navigateToAuth: () -> Unit
+) {
     composable(PROFILE_ROUTE) {
-        ProfileScreen()
+        ProfileScreen(
+            navigateToAuth = navigateToAuth
+        )
     }
 }
 

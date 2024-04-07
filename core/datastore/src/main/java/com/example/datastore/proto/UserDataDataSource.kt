@@ -49,6 +49,12 @@ class UserDataDataSource @Inject constructor(
         }
     }
 
+    suspend fun clear() {
+        return withContext(appDispatchers.background + NonCancellable) {
+            userDataDataStore.updateData { null }
+        }
+    }
+
     @OptIn(ExperimentalContracts::class)
     inline fun withUserID(invoke: (String) -> Unit) {
         contract {

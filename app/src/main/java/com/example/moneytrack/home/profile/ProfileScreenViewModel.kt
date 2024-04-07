@@ -29,7 +29,9 @@ class ProfileScreenViewModel @Inject constructor(
     }
 
     fun logOut() {
-
+        viewModelScope.launch {
+            authRepository.signOut()
+        }
 
     }
 
