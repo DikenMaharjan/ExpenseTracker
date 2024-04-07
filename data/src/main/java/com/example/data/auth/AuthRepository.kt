@@ -28,7 +28,11 @@ class AuthRepository @Inject constructor(
 
     val authState = userDataDataSource.userData
         .map(UserDataProto?::toAuthState)
-        .stateIn(scope, SharingStarted.Lazily, AuthState.LoggedOut)
+        .stateIn(
+            scope,
+            SharingStarted.Lazily,
+            userDataDataSource.getUserDataBlocking().toAuthState()
+        )
 
     suspend fun signUp(userName: String, email: String, password: String): Result<SignUpResponse> {
         return remoteAuthDataSource.signUp(

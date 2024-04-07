@@ -4,6 +4,8 @@ import androidx.datastore.core.DataStore
 import com.example.datastore.model.UserDataProto
 import com.example.utils.dispatcher.AppDispatchers
 import kotlinx.coroutines.NonCancellable
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
@@ -13,6 +15,7 @@ class UserDataDataSource @Inject constructor(
 ) {
 
     val userData = userDataDataStore.data
+    fun getUserDataBlocking() = runBlocking { userData.first() }
 
     suspend fun storeUserData(
         name: String,
