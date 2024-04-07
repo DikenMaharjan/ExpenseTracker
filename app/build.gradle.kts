@@ -62,7 +62,10 @@ dependencies {
     implementation(libs.compose.lifecycle)
 
 
+
     implementation(libs.androidx.navigation.compose)
+
+    implementation(libs.accompanist.navigation)
 
 
     implementation(libs.hilt)

@@ -14,6 +14,9 @@ import androidx.navigation.compose.rememberNavController
 import com.example.moneytrack.navigation.ROOT
 import com.example.moneytrack.navigation.appGraph
 import com.example.moneytrack.ui.theme.MoneyTrackTheme
+import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
+import com.google.accompanist.navigation.material.ModalBottomSheetLayout
+import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -30,20 +33,24 @@ class MainActivity : ComponentActivity() {
     }
 }
 
+@OptIn(ExperimentalMaterialNavigationApi::class)
 @Composable
 fun AppContent(
     modifier: Modifier = Modifier
 ) {
-    val navController = rememberNavController()
+    val bottomSheetNavigator = rememberBottomSheetNavigator()
+    val navController = rememberNavController(bottomSheetNavigator)
     val viewModel = hiltViewModel<MainActivityViewModel>()
-    NavHost(
-        navController = navController,
-        modifier = modifier.fillMaxSize(),
-        startDestination = ROOT
-    ) {
-        appGraph(
+    ModalBottomSheetLayout(bottomSheetNavigator) {
+        NavHost(
             navController = navController,
-            viewModel = viewModel
-        )
+            modifier = modifier.fillMaxSize(),
+            startDestination = ROOT
+        ) {
+            appGraph(
+                navController = navController,
+                viewModel = viewModel
+            )
+        }
     }
 }
