@@ -4,12 +4,16 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.moneytrack.core.components.rememberHalfExpandedSkippingBottomSheetNavigator
@@ -22,13 +26,20 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    private val viewModel by viewModels<MainActivityViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         WindowCompat.setDecorFitsSystemWindows(window, false)
         enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
-            MoneyTrackTheme {
-                AppContent()
+            val isDarkModeEnabled by viewModel.isDarkMode.collectAsStateWithLifecycle()
+            MoneyTrackTheme(
+                darkTheme = isDarkModeEnabled
+            ) {
+                AppContent(
+                    modifier = Modifier.background(MaterialTheme.colorScheme.background)
+                )
             }
         }
     }

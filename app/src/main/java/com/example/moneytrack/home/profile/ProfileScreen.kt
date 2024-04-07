@@ -39,7 +39,8 @@ fun ProfileScreen(
                     updateState = viewModel::updateState,
                     logOut = {
                         viewModel.logOut()
-                    }
+                    },
+                    toggleTheme = viewModel::toggleTheme
                 )
             }
 
@@ -55,7 +56,8 @@ fun ProfileScreenContent(
     isDarkMode: Boolean,
     state: ProfileScreenViewModel.State,
     updateState: (ProfileScreenViewModel.State) -> Unit,
-    logOut: () -> Unit
+    logOut: () -> Unit,
+    toggleTheme: () -> Unit
 ) {
     LazyColumn(
         modifier = modifier
@@ -80,7 +82,7 @@ fun ProfileScreenContent(
 
         item {
             ProfileRowOption(
-                onClick = { },
+                onClick = toggleTheme,
                 icon = if (isDarkMode) Icons.Default.LightMode else Icons.Default.DarkMode,
                 title = if (isDarkMode) "Switch to light mode?" else "Switch to dark mode?",
                 description = ""

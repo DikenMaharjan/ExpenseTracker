@@ -5,6 +5,7 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.core.DataStoreFactory
 import androidx.datastore.core.handlers.ReplaceFileCorruptionHandler
 import androidx.datastore.dataStoreFile
+import androidx.datastore.preferences.preferencesDataStore
 import com.example.datastore.model.UserDataProto
 import com.example.datastore.serializer.EncryptedSerializerFactory
 import com.example.datastore.serializer.UserDataSerializer
@@ -35,4 +36,13 @@ object DatastoreModule {
             corruptionHandler = ReplaceFileCorruptionHandler { null }
         )
     }
+
+    @Singleton
+    @Provides
+    fun providesUserPreferencesDataStore(
+        @ApplicationContext appContext: Context
+    ) = appContext.userPreferencesDataStore
+
 }
+
+val Context.userPreferencesDataStore by preferencesDataStore("userpreferences.")
