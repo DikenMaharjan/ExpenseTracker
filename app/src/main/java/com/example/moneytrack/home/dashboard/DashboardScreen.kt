@@ -40,7 +40,6 @@ import java.time.LocalDate
 fun DashboardScreen(
     modifier: Modifier = Modifier,
     viewModel: DashboardScreenViewModel = hiltViewModel(),
-    navigateToAuth: () -> Unit,
     navigateToAddExpenseBottomSheet: () -> Unit,
     navigateToProfile: () -> Unit
 ) {

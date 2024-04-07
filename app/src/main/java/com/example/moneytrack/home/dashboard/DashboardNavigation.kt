@@ -6,13 +6,11 @@ import androidx.navigation.compose.composable
 const val DASHBOARD_SCREEN_ROUTE = "DashboardScreenRoute"
 
 fun NavGraphBuilder.dashboardScreen(
-    navigateToAuth: () -> Unit,
     navigateToAddExpenseBottomSheet: () -> Unit,
     navigateToProfile: () -> Unit
 ) {
     composable(DASHBOARD_SCREEN_ROUTE) {
         DashboardScreen(
-            navigateToAuth = navigateToAuth,
             navigateToAddExpenseBottomSheet = navigateToAddExpenseBottomSheet,
             navigateToProfile = navigateToProfile
         )

@@ -22,7 +22,6 @@ fun NavGraphBuilder.homeGraph(
         startDestination = DASHBOARD_SCREEN_ROUTE
     ) {
         dashboardScreen(
-            navigateToAuth = navController::navigateToAuth,
             navigateToAddExpenseBottomSheet = navController::navigateToAddExpenseBottomSheet,
             navigateToProfile = navController::navigateToProfile
         )
