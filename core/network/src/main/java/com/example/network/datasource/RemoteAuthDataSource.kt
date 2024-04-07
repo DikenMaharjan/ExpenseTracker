@@ -4,6 +4,7 @@ import com.example.network.api.MoneyTrackApi
 import com.example.network.model.request.SignInRequest
 import com.example.network.model.request.SignUpRequest
 import com.example.network.model.request.VerifyEmailForRegisterRequest
+import com.example.network.model.response.SignInResponseDTO
 import com.example.network.model.response.SignUpResponseDTO
 import com.example.network.model.response.VerifyEmailForRegisterResponseDTO
 import com.example.network.utils.SafeApiCall
@@ -13,7 +14,7 @@ class RemoteAuthDataSource @Inject constructor(
     private val moneyTrackApi: MoneyTrackApi,
     private val safeApiCall: SafeApiCall
 ) {
-    suspend fun signIn(email: String, password: String): Result<Unit> {
+    suspend fun signIn(email: String, password: String): Result<SignInResponseDTO> {
         return safeApiCall {
             moneyTrackApi.signIn(
                 signInRequest = SignInRequest(

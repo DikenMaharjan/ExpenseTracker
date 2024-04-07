@@ -3,6 +3,7 @@ package com.example.network.api
 import com.example.network.model.request.SignInRequest
 import com.example.network.model.request.SignUpRequest
 import com.example.network.model.request.VerifyEmailForRegisterRequest
+import com.example.network.model.response.SignInResponseDTO
 import com.example.network.model.response.SignUpResponseDTO
 import com.example.network.model.response.VerifyEmailForRegisterResponseDTO
 import retrofit2.Response
@@ -14,7 +15,7 @@ interface MoneyTrackApi {
     @POST("/api/signIn")
     suspend fun signIn(
         @Body signInRequest: SignInRequest
-    ): Response<Unit>
+    ): Response<SignInResponseDTO>
 
     @POST("/api/signUp")
     suspend fun signUp(

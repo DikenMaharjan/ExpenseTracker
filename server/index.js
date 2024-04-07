@@ -40,7 +40,7 @@ app.post("/api/signIn", (req, res) => {
 	let user = result[0];
 
 	res.json({
-			username: user.username,
+			userName: user.userName,
 			id:user.id,
 			requiresVerification: true
 		});

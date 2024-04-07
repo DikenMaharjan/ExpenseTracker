@@ -42,12 +42,12 @@ fun SignUpScreen(
     navigateToOtpVerification: (token: String) -> Unit
 ) {
     val userNameTextFieldState =
-        rememberTextFieldState(hint = "Enter your name", initValue = "sfsd")
+        rememberTextFieldState(hint = "Enter your name", initValue = "s")
     val emailTextFieldState =
-        rememberTextFieldState(hint = "Enter your email", initValue = "svasdf")
-    val passwordTextFieldState = rememberTextFieldState(hint = "Password", initValue = "qeee")
+        rememberTextFieldState(hint = "Enter your email", initValue = "s")
+    val passwordTextFieldState = rememberTextFieldState(hint = "Password", initValue = "s")
     val confirmPasswordTextFieldState =
-        rememberTextFieldState(hint = "Please re-enter your password", initValue = "qeee")
+        rememberTextFieldState(hint = "Please re-enter your password", initValue = "s")
 
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val state by viewModel.state.collectAsStateWithLifecycle()

@@ -1,9 +1,14 @@
 package com.example.data.auth
 
+import com.example.data.auth.model.SignInResponse
+import com.example.data.auth.model.SignUpResponse
+import com.example.data.auth.model.toSignInResponse
+import com.example.data.auth.model.toSignUpResponse
 import com.example.data.model.AppUser
 import com.example.datastore.model.UserDataProto
 import com.example.datastore.proto.UserDataDataSource
 import com.example.network.datasource.RemoteAuthDataSource
+import com.example.network.model.response.SignInResponseDTO
 import com.example.network.model.response.SignUpResponseDTO
 import com.example.utils.di.ApplicationScope
 import com.example.utils.extensions.toUnitResult
@@ -33,11 +38,19 @@ class AuthRepository @Inject constructor(
         ).map(SignUpResponseDTO::toSignUpResponse)
     }
 
-    suspend fun signIn(email: String, password: String): Result<Unit> {
-        return remoteAuthDataSource.signIn(
+    suspend fun signIn(email: String, password: String): Result<SignInResponse> {
+        val response = remoteAuthDataSource.signIn(
             email = email,
             password = password
         )
+        return response.onSuccess {
+            if (!it.requiresVerification) {
+                userDataDataSource.storeUserData(
+                    name = it.userName,
+                    id = it.id
+                )
+            }
+        }.map(SignInResponseDTO::toSignInResponse)
     }
 
     suspend fun verifyEmailOnSignUp(token: String, otpCode: String): Result<Unit> {

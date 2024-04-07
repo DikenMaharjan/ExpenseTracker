@@ -1,105 +1,132 @@
 package com.example.moneytrack.auth.signin
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.example.moneytrack.core.components.AppButton
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import com.example.moneytrack.auth.signin.components.SignInButtonContent
+import com.example.moneytrack.auth.signin.components.SignInTextFields
+import com.example.moneytrack.auth.signin.components.SignInTitle
+import com.example.moneytrack.core.components.Screen
+import com.example.moneytrack.core.components.textfield.AppTextFieldState
 import com.example.moneytrack.core.components.textfield.rememberTextFieldState
+import com.example.moneytrack.core.model.ScreenState
 import com.example.moneytrack.ui.theme.LocalDimens
-import com.example.moneytrack.core.components.textfield.AppTextField
+import com.example.moneytrack.ui.theme.MoneyTrackTheme
 
 @Composable
 fun SignInScreen(
     modifier: Modifier = Modifier,
     viewModel: SignInScreenViewModel = hiltViewModel(),
     navigateToSignUp: () -> Unit,
-    navigateToOTPVerification: () -> Unit
+    navigateToOTPVerification: (String) -> Unit,
+    navigateToHome: () -> Unit
 ) {
     val emailTextFieldState =
         rememberTextFieldState(hint = "Enter your email")
     val passwordTextFieldState = rememberTextFieldState(hint = "Password")
-    val localKeyboardController = LocalSoftwareKeyboardController.current
-    Column(
+    val screenState by viewModel.screenState.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+
+    LaunchedEffect(
+        state.verificationToken,
+    ) {
+        val verificationToken = state.verificationToken
+        if (verificationToken != null) {
+            navigateToOTPVerification(verificationToken)
+            viewModel.onVerificationNeededHandled()
+        }
+    }
+
+    LaunchedEffect(state.success) {
+        if (state.success) {
+            navigateToHome()
+            viewModel.onSuccessHandled()
+        }
+    }
+    SignInScreenContent(
+        modifier = modifier.fillMaxSize(),
+        screenState = screenState,
+        emailTextFieldState = emailTextFieldState,
+        passwordTextFieldState = passwordTextFieldState,
+        signIn = { email, password ->
+            viewModel.signIn(email, password)
+        },
+        navigateToSignUp = navigateToSignUp
+    )
+}
+
+@Composable
+private fun SignInScreenContent(
+    modifier: Modifier = Modifier,
+    screenState: ScreenState,
+    emailTextFieldState: AppTextFieldState,
+    passwordTextFieldState: AppTextFieldState,
+    signIn: (email: String, password: String) -> Unit,
+    navigateToSignUp: () -> Unit
+) {
+    Screen(
         modifier = modifier
-            .fillMaxSize()
-            .verticalScroll(rememberScrollState())
-            .padding(24.dp)
-            .imePadding(),
-        verticalArrangement = Arrangement.SpaceBetween,
-        horizontalAlignment = Alignment.Start
+            .fillMaxSize(),
+        screenState = screenState
     ) {
         Column(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState())
+                .padding(24.dp)
+                .imePadding(),
+            verticalArrangement = Arrangement.SpaceBetween,
             horizontalAlignment = Alignment.Start
         ) {
-            Text(text = "Sign In", style = MaterialTheme.typography.headlineMedium)
-            Spacer(modifier = Modifier.height(LocalDimens.current.dimen16))
-            Text(text = "Please sign in to your MoneyTrack account")
-            Spacer(modifier = Modifier.height(LocalDimens.current.dimen24))
-        }
+            SignInTitle()
 
-        Column {
-            AppTextField(
-                title = "Email",
-                textFieldState = emailTextFieldState
-            )
-            Spacer(modifier = Modifier.height(LocalDimens.current.dimen32))
-            AppTextField(
-                title = "Password",
-                textFieldState = passwordTextFieldState
+            Spacer(modifier = Modifier.height(LocalDimens.current.dimen24))
+            SignInTextFields(
+                emailTextFieldState = emailTextFieldState,
+                passwordTextFieldState = passwordTextFieldState
             )
             Spacer(modifier = Modifier.height(12.dp))
-        }
 
-        Column {
-            AppButton(
-                modifier = Modifier.fillMaxWidth(),
+            SignInButtonContent(
                 onClick = {
                     if (emailTextFieldState.isValid && passwordTextFieldState.isValid) {
-                        viewModel.signIn(emailTextFieldState.text, passwordTextFieldState.text)
-                        localKeyboardController?.hide()
+                        signIn(emailTextFieldState.text, passwordTextFieldState.text)
                     }
                 },
-                text = "Sign In"
+                navigateToSignUp = navigateToSignUp
             )
-            Spacer(modifier = Modifier.height(18.dp))
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.Center
-            ) {
-                Text(
-                    text = "Join with us.",
-                    style = MaterialTheme.typography.labelLarge,
-                )
-                Spacer(modifier = Modifier.width(LocalDimens.current.dimen4))
-                Text(
-                    text = "Create Account",
-                    modifier = Modifier.clickable(onClick = navigateToSignUp),
-                    style = MaterialTheme.typography.labelLarge,
-                    color = MaterialTheme.colorScheme.primary,
-                )
-            }
+            Spacer(modifier = Modifier)
         }
-        Spacer(modifier = Modifier)
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+private fun SignInScreenContentPreview() {
+    MoneyTrackTheme {
+        SignInScreenContent(
+            screenState = ScreenState(),
+            emailTextFieldState = rememberTextFieldState(hint = "Email"),
+            passwordTextFieldState = rememberTextFieldState(hint = "Password"),
+            signIn = { _, _ -> },
+            navigateToSignUp = {}
+        )
+    }
+}
+
