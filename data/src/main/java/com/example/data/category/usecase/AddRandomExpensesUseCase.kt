@@ -44,7 +44,7 @@ class AddRandomExpensesUseCase @Inject constructor(
 
 
     private val randomName: String
-        get() = (1..Random.nextInt(10)).joinToString(
+        get() = (1..Random.nextInt(3, 10)).joinToString(
             separator = "",
             transform = { ('A'..'Z').random().uppercase() }
         )

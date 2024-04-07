@@ -33,7 +33,7 @@ fun Int.getContentColor(): Color {
         Color.hsl(
             hue = this.hue(),
             saturation = 1f,
-            lightness = 0.6f
+            lightness = 0.2f
         )
     }
 }
@@ -52,10 +52,12 @@ fun Int.getBackgroundColor(): Color {
 private fun Int.hue() = (abs(this.hashCode()) % 360).toFloat()
 
 
-@Preview
+@Preview(showBackground = true, showSystemUi = true)
 @Composable
 private fun CategoryViewPreview() {
-    MoneyTrackTheme {
+    MoneyTrackTheme(
+        darkTheme = true
+    ) {
         CategoryView(category = fakeCategory("Category 1"))
     }
 }
