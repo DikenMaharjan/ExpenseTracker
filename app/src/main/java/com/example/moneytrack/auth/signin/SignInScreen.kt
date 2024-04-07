@@ -14,6 +14,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -81,6 +82,8 @@ private fun SignInScreenContent(
     signIn: (email: String, password: String) -> Unit,
     navigateToSignUp: () -> Unit
 ) {
+    val localKeyboardController = LocalSoftwareKeyboardController.current
+
     Screen(
         modifier = modifier
             .fillMaxSize(),
@@ -108,6 +111,7 @@ private fun SignInScreenContent(
                 onClick = {
                     if (emailTextFieldState.isValid && passwordTextFieldState.isValid) {
                         signIn(emailTextFieldState.text, passwordTextFieldState.text)
+                        localKeyboardController?.hide()
                     }
                 },
                 navigateToSignUp = navigateToSignUp

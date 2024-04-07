@@ -29,6 +29,7 @@ fun AppTextField(
     enabled: Boolean = true,
     singleLine: Boolean = true,
     maxLines: Int = 4,
+    showErrorMsgs: Boolean = true,
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     textStyle: TextStyle = LocalTextStyle.current,
@@ -38,7 +39,7 @@ fun AppTextField(
     title = title,
     value = textFieldState.text,
     placeHolder = textFieldState.hint,
-    isError = textFieldState.errorMsg != null,
+    errorMsg = textFieldState.errorMsg,
     onValueChange = textFieldState::updateText,
     enabled = enabled,
     singleLine = singleLine,
@@ -46,7 +47,8 @@ fun AppTextField(
     visualTransformation = visualTransformation,
     keyboardOptions = keyboardOptions.copy(keyboardType = textFieldState.textType.keyboardType),
     textStyle = textStyle,
-    keyboardActions = keyboardActions
+    keyboardActions = keyboardActions,
+    showErrorMsgs = showErrorMsgs
 )
 
 @Composable
@@ -55,8 +57,9 @@ fun AppTextField(
     title: String,
     value: String,
     placeHolder: String,
-    isError: Boolean,
     enabled: Boolean = true,
+    showErrorMsgs: Boolean,
+    errorMsg: String?,
     singleLine: Boolean = true,
     maxLines: Int = 4,
     visualTransformation: VisualTransformation = VisualTransformation.None,
@@ -100,10 +103,17 @@ fun AppTextField(
                         }
                     }
                     HorizontalDivider(
-                        color = if (isError) MaterialTheme.colorScheme.error else DividerDefaults.color
+                        color = if (errorMsg != null) MaterialTheme.colorScheme.error else DividerDefaults.color
                     )
                 }
             }
         )
+        if (showErrorMsgs && errorMsg != null) {
+            Text(
+                text = errorMsg,
+                style = MaterialTheme.typography.labelSmall,
+                color = MaterialTheme.colorScheme.error
+            )
+        }
     }
 }

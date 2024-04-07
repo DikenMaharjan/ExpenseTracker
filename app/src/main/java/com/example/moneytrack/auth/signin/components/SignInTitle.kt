@@ -63,16 +63,12 @@ internal fun SignInButtonContent(
     navigateToSignUp: () -> Unit
 ) {
 
-    val localKeyboardController = LocalSoftwareKeyboardController.current
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
         AppButton(
             modifier = Modifier.fillMaxWidth(),
-            onClick = {
-                onClick()
-                localKeyboardController?.hide()
-            },
+            onClick = onClick,
             text = "Sign In"
         )
         Spacer(modifier = Modifier.height(18.dp))
