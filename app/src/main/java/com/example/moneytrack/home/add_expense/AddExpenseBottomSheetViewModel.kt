@@ -1,6 +1,5 @@
 package com.example.moneytrack.home.add_expense
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.category.CategoryRepository
@@ -33,15 +32,13 @@ class AddExpenseBottomSheetViewModel @Inject constructor(
     fun addExpense(name: String, amount: String) {
         viewModelScope.launch {
             val selectedCategory = state.value.selectedCategory
-            Log.e(TAG, "addExpense: sele", )
-            val amountDecimal = amount.toDoubleOrNull() ?: return@launch
-            Log.e(TAG, "addExpense: $amountDecimal", )
             if (selectedCategory != null) {
                 expenseRepository.insertExpense(
                     name = name,
-                    amount = amountDecimal,
+                    amount = amount.toDouble(),
                     category = selectedCategory
                 )
+                _state.update { it.copy(selectedCategory = null) }
             }
         }
     }

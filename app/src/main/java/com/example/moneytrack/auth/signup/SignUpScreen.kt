@@ -113,7 +113,9 @@ private fun SignUpScreenContent(
                     if (userNameTextFieldState.isValid &&
                         passwordTextFieldState.isValid &&
                         emailTextFieldState.isValid &&
-                        confirmPasswordTextFieldState.equalsText(passwordTextFieldState.text)
+                        confirmPasswordTextFieldState.equalsText(passwordTextFieldState.text){
+                            "Password do not match."
+                        }
                     ) {
                         signUp(
                             userNameTextFieldState.text,

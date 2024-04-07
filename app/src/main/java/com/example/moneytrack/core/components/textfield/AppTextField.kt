@@ -38,7 +38,7 @@ fun AppTextField(
     title = title,
     value = textFieldState.text,
     placeHolder = textFieldState.hint,
-    isError = textFieldState.isError && textFieldState.highlightError,
+    isError = textFieldState.errorMsg != null,
     onValueChange = textFieldState::updateText,
     enabled = enabled,
     singleLine = singleLine,

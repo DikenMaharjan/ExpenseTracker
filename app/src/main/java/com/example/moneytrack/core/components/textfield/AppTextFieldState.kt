@@ -15,7 +15,6 @@ fun rememberTextFieldState(
     hint: String,
     initValue: String = "",
     textType: TextType = TextType.Text,
-    highlightError: Boolean = true,
     transform: (String) -> String = { it }
 ): AppTextFieldState =
     rememberSaveable(initValue, saver = AppTextFieldState.Saver) {
@@ -23,7 +22,6 @@ fun rememberTextFieldState(
             initValue = initValue,
             hint = hint,
             textType = textType,
-            highlightError = highlightError,
             transform = transform
         )
     }
@@ -32,61 +30,56 @@ open class AppTextFieldState(
     val initValue: String,
     val hint: String,
     val textType: TextType,
-    val highlightError: Boolean,
     val transform: (String) -> String = { it }
 ) {
     var text by mutableStateOf(initValue)
         protected set
 
-    var isError by mutableStateOf(false)
+    var errorMsg: String? by mutableStateOf(null)
         protected set
 
     fun updateText(value: String) {
         text = transform(value)
-        isError = false
+        errorMsg = null
     }
 
-    fun equalsText(other: String): Boolean {
-        isError = text != other
-        return !isError
+    fun equalsText(other: String, getErrorMsg: () -> String): Boolean {
+        val isEqual = text != other
+        return isEqual.also {
+            if (!isEqual) {
+                errorMsg = getErrorMsg()
+            }
+        }
     }
 
 
     val isValid: Boolean
         get() = run {
-            isError = !validate()
-            isError
+            errorMsg = textType.rule.getError(text)
+            errorMsg == null
         }
 
-    fun validate() = when (textType) {
-        TextType.Text -> text.isNotBlank()
-        TextType.Username -> text.all {
-            it.isLetter() || it.isWhitespace()
-        } && text.length >= 3
-
-        TextType.Password -> text.isNotBlank()
-        TextType.Amount -> text.isNotBlank() && text.toDoubleOrNull() != null
-    }
-
+    val isValidSilent: Boolean
+        get() = textType.rule.getError(text) == null
 
     companion object {
         val Saver: Saver<AppTextFieldState, *> = listSaver(
-            save = { listOf(it.text, it.hint, it.textType.name, it.highlightError) },
+            save = { listOf(it.text, it.hint, it.textType.name) },
             restore = {
                 AppTextFieldState(
                     initValue = it[0] as String,
                     hint = it[1] as String,
                     textType = TextType.valueOf(it[2] as String),
-                    highlightError = it[3] as Boolean
                 )
             }
         )
     }
 }
 
-enum class TextType(val keyboardType: KeyboardType) {
-    Text(KeyboardType.Text),
-    Password(KeyboardType.Text),
-    Username(KeyboardType.Text),
-    Amount(KeyboardType.Decimal)
+enum class TextType(val keyboardType: KeyboardType, val rule: Rule) {
+    Text(KeyboardType.Text, Rules.requiredRule),
+    Password(KeyboardType.Text, Rules.requiredRule),
+    Username(KeyboardType.Text, Rules.userNameRule),
+    Amount(KeyboardType.Decimal, Rules.amountRule),
+    Email(KeyboardType.Email, Rules.emailRule)
 }

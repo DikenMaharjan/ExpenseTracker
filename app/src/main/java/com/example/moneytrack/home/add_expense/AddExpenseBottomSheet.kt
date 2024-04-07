@@ -80,10 +80,11 @@ private fun AddExpenseBottomSheetContent(
         )
 
         val isEnabled =
-            expenseTextField.validate() && amountTextField.validate() && (state.selectedCategory != null)
+            expenseTextField.isValidSilent && amountTextField.isValidSilent && (state.selectedCategory != null)
 
         AppButton(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth(),
             onClick = {
                 addExpense(expenseTextField.text, amountTextField.text)
                 expenseTextField.updateText("")
