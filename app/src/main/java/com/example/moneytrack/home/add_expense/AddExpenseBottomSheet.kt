@@ -22,8 +22,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.data.model.Category
 import com.example.data.model.fakeCategory
 import com.example.moneytrack.core.components.AppButton
-import com.example.moneytrack.core.components.textfield.AppTextField
 import com.example.moneytrack.core.components.textfield.AppTextFieldState
+import com.example.moneytrack.core.components.textfield.OutlinedAppTextField
 import com.example.moneytrack.core.components.textfield.TextType
 import com.example.moneytrack.core.components.textfield.rememberTextFieldState
 import com.example.moneytrack.ui.theme.LocalDimens
@@ -74,8 +74,8 @@ private fun AddExpenseBottomSheetContent(
         verticalArrangement = Arrangement.spacedBy(LocalDimens.current.dimen24)
     ) {
         Text(text = "Add Expense", style = MaterialTheme.typography.titleLarge)
-        AppTextField(textFieldState = expenseTextField, title = "Expense Name")
-        AppTextField(textFieldState = amountTextField, title = "Amount")
+        OutlinedAppTextField(textFieldState = expenseTextField)
+        OutlinedAppTextField(textFieldState = amountTextField)
         CategoriesRow(
             categories = categories,
             onCategorySelected = selectCategory,

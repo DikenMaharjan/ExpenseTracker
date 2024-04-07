@@ -8,11 +8,13 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.text2.input.InputTransformation.Companion.keyboardOptions
 import androidx.compose.material3.DividerDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -128,4 +130,23 @@ fun AppTextField(
             )
         }
     }
+}
+
+@Composable
+fun OutlinedAppTextField(
+    modifier: Modifier = Modifier,
+    textFieldState: AppTextFieldState
+) {
+    OutlinedTextField(
+        modifier = modifier.fillMaxWidth(),
+        value = textFieldState.text,
+        onValueChange = textFieldState::updateText,
+        label = {
+            Text(text = textFieldState.hint)
+        },
+        placeholder = {
+            Text(text = textFieldState.hint)
+        },
+        keyboardOptions = KeyboardOptions.Default.copy(keyboardType = textFieldState.textType.keyboardType),
+    )
 }
