@@ -125,8 +125,8 @@ private fun SignUpScreenContent(
                 navigateBack = navigateBack,
                 signUp = {
                     if (userNameTextFieldState.isValid &&
-                        passwordTextFieldState.isValid &&
                         emailTextFieldState.isValid &&
+                        passwordTextFieldState.isValid &&
                         confirmPasswordTextFieldState.equalsText(passwordTextFieldState.text) {
                             "Password do not match."
                         }
