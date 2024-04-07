@@ -35,7 +35,7 @@ fun DashboardTopBar(
                         .clip(CircleShape)
                         .clickable(onClick = navigateToProfile),
                     user = appUser,
-                    style = MaterialTheme.typography.headlineMedium
+                    style = MaterialTheme.typography.headlineSmall
                 )
             }
         )
