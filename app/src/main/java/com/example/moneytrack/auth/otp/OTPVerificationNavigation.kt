@@ -39,7 +39,9 @@ fun NavGraphBuilder.otpVerificationScreen() {
             }
         )
     ) {
-        OTPVerificationScreen()
+        OTPVerificationScreen(
+            navigateToHome = {}
+        )
     }
 }
 

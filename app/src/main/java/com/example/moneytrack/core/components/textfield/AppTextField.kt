@@ -1,4 +1,4 @@
-package com.example.notesing.core.components.textfield
+package com.example.moneytrack.core.components.textfield
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,7 +19,6 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.VisualTransformation
-import com.example.moneytrack.core.components.textfield.AppTextFieldState
 import com.example.moneytrack.ui.theme.LocalDimens
 
 @Composable

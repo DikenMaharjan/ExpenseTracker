@@ -24,7 +24,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.example.moneytrack.core.components.AppButton
 import com.example.moneytrack.core.components.textfield.rememberTextFieldState
 import com.example.moneytrack.ui.theme.LocalDimens
-import com.example.notesing.core.components.textfield.AppTextField
+import com.example.moneytrack.core.components.textfield.AppTextField
 
 @Composable
 fun SignInScreen(

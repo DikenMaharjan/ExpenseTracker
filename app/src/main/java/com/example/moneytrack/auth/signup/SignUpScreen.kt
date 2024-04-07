@@ -1,6 +1,5 @@
 package com.example.moneytrack.auth.signup
 
-import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -31,7 +30,7 @@ import com.example.moneytrack.core.components.Screen
 import com.example.moneytrack.core.components.textfield.AppTextFieldState
 import com.example.moneytrack.core.components.textfield.rememberTextFieldState
 import com.example.moneytrack.ui.theme.LocalDimens
-import com.example.notesing.core.components.textfield.AppTextField
+import com.example.moneytrack.core.components.textfield.AppTextField
 
 private const val TAG = "SignUpScreen"
 

@@ -3,6 +3,7 @@ package com.example.data.auth
 import com.example.data.model.AppUser
 import com.example.network.datasource.RemoteAuthDataSource
 import com.example.network.model.response.SignUpResponseDTO
+import com.example.utils.extensions.toUnitResult
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -24,6 +25,18 @@ class AuthRepository @Inject constructor(
             email = email,
             password = password
         )
+    }
+
+    suspend fun verifyEmailOnSignUp(token: String, otpCode: String): Result<Unit> {
+        val response = remoteAuthDataSource.verifyEmailOnSignUp(
+            token = token,
+            otpCode = otpCode
+        )
+        response
+            .onSuccess {
+
+            }
+        return response.toUnitResult()
     }
 
     fun signOut(): Result<Unit> {
