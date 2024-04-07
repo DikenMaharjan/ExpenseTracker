@@ -44,8 +44,7 @@ open class AppTextFieldState(
     }
 
     fun equalsText(other: String, getErrorMsg: () -> String): Boolean {
-        val isEqual = text != other
-        return isEqual.also {
+        return (text == other).also { isEqual ->
             if (!isEqual) {
                 errorMsg = getErrorMsg()
             }
