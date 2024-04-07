@@ -11,12 +11,12 @@ import androidx.core.view.WindowCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
+import com.example.moneytrack.core.components.rememberHalfExpandedSkippingBottomSheetNavigator
 import com.example.moneytrack.navigation.ROOT
 import com.example.moneytrack.navigation.appGraph
 import com.example.moneytrack.ui.theme.MoneyTrackTheme
 import com.google.accompanist.navigation.material.ExperimentalMaterialNavigationApi
 import com.google.accompanist.navigation.material.ModalBottomSheetLayout
-import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -38,7 +38,7 @@ class MainActivity : ComponentActivity() {
 fun AppContent(
     modifier: Modifier = Modifier
 ) {
-    val bottomSheetNavigator = rememberBottomSheetNavigator()
+    val bottomSheetNavigator = rememberHalfExpandedSkippingBottomSheetNavigator()
     val navController = rememberNavController(bottomSheetNavigator)
     val viewModel = hiltViewModel<MainActivityViewModel>()
     ModalBottomSheetLayout(bottomSheetNavigator) {

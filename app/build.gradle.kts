@@ -39,7 +39,7 @@ android {
     }
 
     buildFeatures {
-        compose =  true
+        compose = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = libs.versions.compose.compiler.get()
@@ -63,6 +63,8 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.runtime)
     implementation(libs.compose.lifecycle)
+
+    implementation(libs.androidx.material)
 
     coreLibraryDesugaring(libs.desugar.jdk)
 
