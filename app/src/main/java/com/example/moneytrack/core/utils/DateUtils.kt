@@ -1,7 +1,7 @@
 package com.example.moneytrack.core.utils
 
 import java.time.LocalDate
-import java.time.format.TextStyle
+import java.time.temporal.ChronoUnit
 
 fun LocalDate.parseTodayTomorrowOrDay(): String {
     val now = LocalDate.now()
@@ -15,7 +15,8 @@ fun LocalDate.parseTodayTomorrowOrDay(): String {
         }
 
         else -> {
-            this.dayOfWeek.getDisplayName(TextStyle.FULL, java.util.Locale.getDefault())
+            val days = ChronoUnit.DAYS.between(this, now)
+            "$days days ago"
         }
     }
 }

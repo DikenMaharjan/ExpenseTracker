@@ -1,6 +1,7 @@
 package com.example.moneytrack.home.dashboard.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -38,11 +39,23 @@ fun GroupedExpenseCard(
         Column(
             modifier = Modifier.padding(LocalDimens.current.dimen12)
         ) {
-            Text(
-                text = "${date.parseTodayTomorrowOrDay()} ($date)",
-                style = MaterialTheme.typography.labelSmall,
-                fontWeight = FontWeight.Bold
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Text(
+                    text = "${date.parseTodayTomorrowOrDay()} ($date)",
+                    style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold
+                )
+                val totalExpenses = expenses.sumOf { it.amount }.currencyFormatWithRsPrefix()
+                Text(
+                    text = totalExpenses, style = MaterialTheme.typography.labelSmall,
+                    fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.error
+                )
+            }
+
             expenses.forEachIndexed { index, expense ->
                 ExpenseRow(expense = expense)
                 if (index != expenses.size - 1) {
