@@ -46,16 +46,45 @@ app.post("/api/signIn", (req, res) => {
 		});
 });
 
+
+app.post("/api/signUp/verify", (req, res) => {
+	const { token, otpCode } = req.body;
+	let userId = token;
+	let filteredUsers =  users.filter((user) => user.id === userId)
+	if (filteredUsers.length === 0){
+		returnres.status(404).send({
+			error_message: "Token not found.",
+		})
+	}
+	let user = filteredUsers[0];
+
+	if (userOtpCodes[token] === otpCode && user !== undefined){
+		user.emailVerified = true;
+		delete userOtpCodes[userId];
+	
+		return res.json({
+			message: "Verification Successful",
+			id: user.id,
+			userName: user.userName
+		})
+	}
+	res.status(404).send({
+		error_message: "Invalid OTP",
+	});
+});
+
+
+
 app.post("/api/signUp", (req, res) => {
-	const { email, password, username } = req.body;
+	const { email, password, userName } = req.body;
 	let result = users.filter((user) => user.email === email);
 	if (result.length === 0) {
-		const newUser = { id: generateID(), email, password, username };
+		const newUser = { id: generateID(), email, password, userName, emailVerified: false };
 		users.push(newUser);
 		let code = generateCode();
 		userOtpCodes[newUser.id] = code;
 		console.log(`OTP sent to email ${email}`);
-		console.log(`The OTP is ${code}rs`)
+		console.log(`The OTP is ${code}`)
 		return res.json({
 			message: "Account created successfully!",
 			userId: newUser.id,

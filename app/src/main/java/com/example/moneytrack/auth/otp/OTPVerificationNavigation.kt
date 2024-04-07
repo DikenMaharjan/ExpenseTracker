@@ -25,7 +25,9 @@ private val otpVerificationRoute: String = buildNavigationRoute(
 )
 
 
-fun NavGraphBuilder.otpVerificationScreen() {
+fun NavGraphBuilder.otpVerificationScreen(
+    navigateToHome: () -> Unit
+) {
     composable(
         route = otpVerificationRoute,
         arguments = listOf(
@@ -40,7 +42,7 @@ fun NavGraphBuilder.otpVerificationScreen() {
         )
     ) {
         OTPVerificationScreen(
-            navigateToHome = {}
+            navigateToHome = navigateToHome
         )
     }
 }

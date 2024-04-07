@@ -5,6 +5,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.navigation
 import com.example.moneytrack.auth.navigation.AUTH_ROUTE
 import com.example.moneytrack.auth.navigation.authGraph
+import com.example.moneytrack.home.homeGraph
 
 const val ROOT = "Root"
 fun NavGraphBuilder.appGraph(navController: NavController) {
@@ -13,6 +14,9 @@ fun NavGraphBuilder.appGraph(navController: NavController) {
         startDestination = AUTH_ROUTE
     ) {
         authGraph(
+            navController = navController
+        )
+        homeGraph(
             navController = navController
         )
     }
