@@ -56,13 +56,15 @@ class UserDataDataSource @Inject constructor(
     }
 
     @OptIn(ExperimentalContracts::class)
-    inline fun withUserID(invoke: (String) -> Unit) {
+    inline fun <T> withUserID(invoke: (String) -> T): T? {
         contract {
             callsInPlace(invoke, InvocationKind.AT_MOST_ONCE)
         }
         val userID = loggedInUserID.value
-        if (userID != null) {
+        return if (userID != null) {
             invoke(userID)
+        } else {
+            null
         }
     }
 }

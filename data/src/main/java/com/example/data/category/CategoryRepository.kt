@@ -36,16 +36,18 @@ class CategoryRepository @Inject constructor(
 
     suspend fun insertCategory(
         name: String
-    ) {
-        withContext(appDispatchers.background) {
+    ): Category? {
+        return withContext(appDispatchers.background) {
             userDataDataSource.withUserID { userId ->
-                localCategoryDataSource.insertCategory(
-                    CategoryEntity(
-                        id = UUID.randomUUID().toString(),
-                        name = name,
-                        createdUser = userId
-                    )
+                val categoryEntity = CategoryEntity(
+                    id = UUID.randomUUID().toString(),
+                    name = name,
+                    createdUser = userId
                 )
+                localCategoryDataSource.insertCategory(
+                    categoryEntity
+                )
+                categoryEntity.toModel()
             }
         }
     }

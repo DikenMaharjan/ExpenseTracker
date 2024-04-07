@@ -25,10 +25,12 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.InputChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -156,7 +158,8 @@ private fun AddExpenseSheetViews(
                 categories = categories,
                 selectedCategory = state.selectedCategory,
                 onCategorySelected = selectCategory,
-                startAddingCategory = startAddingCategory
+                startAddingCategory = startAddingCategory,
+                startAddingExpense = startAddingExpense
             )
             AnimatedVisibility(
                 modifier = Modifier.matchParentSize(),
@@ -208,7 +211,8 @@ fun EveryCategories(
     categories: List<Category>,
     selectedCategory: Category?,
     onCategorySelected: (Category) -> Unit,
-    startAddingCategory: () -> Unit
+    startAddingCategory: () -> Unit,
+    startAddingExpense: () -> Unit
 ) {
     Column(
         modifier = modifier,
@@ -234,7 +238,20 @@ fun EveryCategories(
                 )
             }
         }
-        AppButton(onClick = startAddingCategory, text = "Create new category")
+        Column {
+            AppButton(onClick = startAddingCategory, text = "Create new category")
+            Spacer(modifier = Modifier.height(LocalDimens.current.dimen8))
+            OutlinedButton(
+                modifier = Modifier.fillMaxWidth(), onClick = startAddingExpense,
+                colors = ButtonDefaults.outlinedButtonColors(
+                    containerColor = MaterialTheme.colorScheme.secondary,
+                    contentColor = MaterialTheme.colorScheme.onSecondary
+                )
+            ) {
+                Text(text = "Done")
+            }
+        }
+
     }
 }
 
@@ -347,7 +364,7 @@ private fun BottomSheetTopBar(
             imageVector = Icons.AutoMirrored.Default.ArrowBack,
             contentDescription = "Back Icon"
         )
-        Spacer(modifier = Modifier.width(LocalDimens.current.dimen4))
+        Spacer(modifier = Modifier.width(LocalDimens.current.dimen8))
         Text(text = title, style = MaterialTheme.typography.titleLarge)
     }
 }

@@ -44,15 +44,19 @@ class AddExpenseBottomSheetViewModel @Inject constructor(
     }
 
 
-
     fun selectCategory(category: Category) {
         _state.update { it.copy(selectedCategory = category) }
     }
 
     fun addCategory(newCategory: String) {
         viewModelScope.launch {
-            categoryRepository.insertCategory(newCategory)
-            _state.update { it.copy(sheetFunction = SheetFunction.ViewAllCategories) }
+            val createdCategory = categoryRepository.insertCategory(newCategory)
+            _state.update {
+                it.copy(
+                    sheetFunction = SheetFunction.ViewAllCategories,
+                    selectedCategory = createdCategory
+                )
+            }
         }
     }
 
@@ -63,6 +67,7 @@ class AddExpenseBottomSheetViewModel @Inject constructor(
     fun startAddingCategory() {
         _state.update { it.copy(sheetFunction = SheetFunction.AddCategory) }
     }
+
     fun startAddingExpense() {
         _state.update { it.copy(sheetFunction = SheetFunction.AddExpense) }
     }
