@@ -36,6 +36,7 @@ android {
 }
 
 dependencies {
+    implementation(projects.core.utils)
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
@@ -46,6 +47,7 @@ dependencies {
     ksp(libs.hilt.compiler)
 
     implementation(libs.androidx.room.runtime)
+    implementation(libs.androidx.room.ktx)
     ksp(libs.androidx.room.compiler)
 
     coreLibraryDesugaring(libs.desugar.jdk)
