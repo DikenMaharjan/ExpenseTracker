@@ -16,6 +16,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -25,6 +26,7 @@ import com.example.moneytrack.auth.signup.components.SignUpTextFields
 import com.example.moneytrack.auth.signup.components.SignUpTitle
 import com.example.moneytrack.core.components.Screen
 import com.example.moneytrack.core.components.textfield.AppTextFieldState
+import com.example.moneytrack.core.components.textfield.TextType
 import com.example.moneytrack.core.components.textfield.rememberTextFieldState
 import com.example.moneytrack.core.model.ScreenState
 import com.example.moneytrack.ui.theme.LocalDimens
@@ -39,13 +41,23 @@ fun SignUpScreen(
     navigateBack: () -> Unit,
     navigateToOtpVerification: (token: String) -> Unit
 ) {
-    val userNameTextFieldState =
-        rememberTextFieldState(hint = "Enter your name", initValue = "s")
-    val emailTextFieldState =
-        rememberTextFieldState(hint = "Enter your email", initValue = "s")
-    val passwordTextFieldState = rememberTextFieldState(hint = "Password", initValue = "s")
+    val userNameTextFieldState = rememberTextFieldState(
+        hint = "Enter your name",
+        textType = TextType.Username
+    )
+    val emailTextFieldState = rememberTextFieldState(
+        hint = "Enter your email",
+        textType = TextType.Email
+    )
+    val passwordTextFieldState = rememberTextFieldState(
+        hint = "Password",
+        textType = TextType.Password
+    )
     val confirmPasswordTextFieldState =
-        rememberTextFieldState(hint = "Please re-enter your password", initValue = "s")
+        rememberTextFieldState(
+            hint = "Please re-enter your password",
+            textType = TextType.Password
+        )
 
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -80,6 +92,8 @@ private fun SignUpScreenContent(
     navigateBack: () -> Unit,
     signUp: (userName: String, email: String, password: String) -> Unit
 ) {
+    val localKeyboardController = LocalSoftwareKeyboardController.current
+
     Screen(
         modifier = modifier
             .fillMaxSize()
@@ -113,7 +127,7 @@ private fun SignUpScreenContent(
                     if (userNameTextFieldState.isValid &&
                         passwordTextFieldState.isValid &&
                         emailTextFieldState.isValid &&
-                        confirmPasswordTextFieldState.equalsText(passwordTextFieldState.text){
+                        confirmPasswordTextFieldState.equalsText(passwordTextFieldState.text) {
                             "Password do not match."
                         }
                     ) {
@@ -122,6 +136,7 @@ private fun SignUpScreenContent(
                             emailTextFieldState.text,
                             passwordTextFieldState.text
                         )
+                        localKeyboardController?.hide()
                     }
                 }
             )

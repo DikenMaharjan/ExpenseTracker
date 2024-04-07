@@ -37,14 +37,14 @@ fun Screen(
     content: @Composable BoxScope.() -> Unit
 ) {
     Box(
-        modifier = modifier
-            .fillMaxSize()
-            .systemBarsPadding(),
+        modifier = Modifier
+            .fillMaxSize(),
         contentAlignment = Alignment.TopStart
     ) {
         Column(
-            modifier = Modifier
-                .fillMaxSize(),
+            modifier = modifier
+                .fillMaxSize()
+                .systemBarsPadding(),
             verticalArrangement = Arrangement.Top
         ) {
             if (showBack || title != null) {

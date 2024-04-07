@@ -13,7 +13,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import com.example.moneytrack.core.components.AppButton
 import com.example.moneytrack.core.components.textfield.AppTextField
@@ -77,17 +76,13 @@ internal fun SignUpButtonRow(
     signUp: () -> Unit,
     navigateBack: () -> Unit
 ) {
-    val localKeyboardController = LocalSoftwareKeyboardController.current
 
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
         AppButton(
             modifier = Modifier.fillMaxWidth(),
-            onClick = {
-                signUp()
-                localKeyboardController?.hide()
-            },
+            onClick = signUp,
             text = "Sign Up"
         )
         Spacer(modifier = Modifier.height(18.dp))
