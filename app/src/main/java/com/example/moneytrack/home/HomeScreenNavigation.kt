@@ -7,7 +7,7 @@ import com.example.moneytrack.home.dashboard.DASHBOARD_SCREEN_ROUTE
 import com.example.moneytrack.home.dashboard.dashboardScreen
 import com.example.moneytrack.navigation.clearStackNavOptions
 
-private const val HOME_ROOT = "HomeRoot"
+const val HOME_ROOT = "HomeRoot"
 
 fun NavGraphBuilder.homeGraph(
     navController: NavController
@@ -16,7 +16,9 @@ fun NavGraphBuilder.homeGraph(
         route = HOME_ROOT,
         startDestination = DASHBOARD_SCREEN_ROUTE
     ) {
-        dashboardScreen()
+        dashboardScreen(
+            navController = navController
+        )
     }
 }
 

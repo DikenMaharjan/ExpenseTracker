@@ -8,13 +8,14 @@ import com.example.moneytrack.auth.signin.SIGN_IN_ROUTE
 import com.example.moneytrack.auth.signin.signInScreen
 import com.example.moneytrack.auth.signup.signUpScreen
 import com.example.moneytrack.home.navigateToHome
+import com.example.moneytrack.navigation.clearStackNavOptions
 
-const val AUTH_ROUTE = "Auth"
+const val AUTH_ROOT = "Auth"
 
 fun NavGraphBuilder.authGraph(
     navController: NavController
 ) {
-    navigation(route = AUTH_ROUTE, startDestination = SIGN_IN_ROUTE) {
+    navigation(route = AUTH_ROOT, startDestination = SIGN_IN_ROUTE) {
         signInScreen(navController)
         signUpScreen(navController)
         otpVerificationScreen(
@@ -24,5 +25,5 @@ fun NavGraphBuilder.authGraph(
 }
 
 fun NavController.navigateToAuth() {
-    navigate(AUTH_ROUTE)
+    navigate(route = AUTH_ROOT, navOptions = clearStackNavOptions)
 }

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import com.example.moneytrack.navigation.ROOT
@@ -34,11 +35,15 @@ fun AppContent(
     modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
+    val viewModel = hiltViewModel<MainActivityViewModel>()
     NavHost(
         navController = navController,
         modifier = modifier.fillMaxSize(),
         startDestination = ROOT
     ) {
-        appGraph(navController)
+        appGraph(
+            navController = navController,
+            viewModel = viewModel
+        )
     }
 }
