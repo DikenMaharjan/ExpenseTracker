@@ -55,6 +55,9 @@ class ExpenseRepository @Inject constructor(
         }
     }
 
+    suspend fun addRandomExpenses(count: Int = 50) {
+
+    }
 
 }
 

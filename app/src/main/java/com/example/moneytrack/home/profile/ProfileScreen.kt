@@ -10,9 +10,11 @@ import androidx.compose.material.icons.filled.DarkMode
 import androidx.compose.material.icons.filled.LightMode
 import androidx.compose.material.icons.outlined.FormatColorFill
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.data.auth.AuthRepository
@@ -20,6 +22,8 @@ import com.example.data.model.AppUser
 import com.example.moneytrack.core.components.AppDialog
 import com.example.moneytrack.home.profile.components.ProfileRowOption
 import com.example.moneytrack.home.profile.components.ProfileUserInfo
+import com.example.utils.extensions.showShortToast
+
 
 @Composable
 fun ProfileScreen(
@@ -30,6 +34,21 @@ fun ProfileScreen(
     val authState by viewModel.authState.collectAsStateWithLifecycle()
     val isDarkMode by viewModel.isDarkMode.collectAsStateWithLifecycle()
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val context = LocalContext.current
+
+    LaunchedEffect(state.isLogOutSuccess) {
+        if (state.isLogOutSuccess) {
+            navigateToAuth()
+            viewModel.onSignOutHandled()
+        }
+    }
+    LaunchedEffect(state.isAddingRandomExpenseSuccessful) {
+        if (state.isAddingRandomExpenseSuccessful) {
+            context.showShortToast("Random expenses added.")
+            viewModel.onFillSuccessHandled()
+        }
+    }
+
     Box(modifier = modifier.fillMaxSize()) {
         when (val auth = authState) {
             is AuthRepository.AuthState.LoggedIn -> {
@@ -37,12 +56,11 @@ fun ProfileScreen(
                     appUser = auth.appUser,
                     isDarkMode = isDarkMode,
                     state = state,
-                    updateState = viewModel::updateState,
-                    logOut = {
-                        viewModel.logOut()
-                        navigateToAuth()
-                    },
-                    toggleTheme = viewModel::toggleTheme
+                    logOut = viewModel::logOut,
+                    toggleTheme = viewModel::toggleTheme,
+                    addRandomExpense = viewModel::addRandomExpense,
+                    showHideAddExpenseConfirmation = viewModel::showHideAddExpenseConfirmation,
+                    showHideLogoutConfirmation = viewModel::showHideLogoutConfirmation
                 )
             }
 
@@ -57,9 +75,11 @@ fun ProfileScreenContent(
     appUser: AppUser,
     isDarkMode: Boolean,
     state: ProfileScreenViewModel.State,
-    updateState: (ProfileScreenViewModel.State) -> Unit,
     logOut: () -> Unit,
-    toggleTheme: () -> Unit
+    toggleTheme: () -> Unit,
+    addRandomExpense: () -> Unit,
+    showHideLogoutConfirmation: (Boolean) -> Unit,
+    showHideAddExpenseConfirmation: (Boolean) -> Unit
 ) {
     LazyColumn(
         modifier = modifier
@@ -74,7 +94,7 @@ fun ProfileScreenContent(
         item {
             ProfileRowOption(
                 onClick = {
-                    updateState(state.copy(isFillRandomExpenseConfirmationShown = true))
+                    showHideAddExpenseConfirmation(true)
                 },
                 icon = Icons.Outlined.FormatColorFill,
                 title = "Fill random expenses",
@@ -94,7 +114,7 @@ fun ProfileScreenContent(
         item {
             ProfileRowOption(
                 onClick = {
-                    updateState(state.copy(isLogOutConfirmationShown = true))
+                    showHideLogoutConfirmation(true)
                 },
                 icon = Icons.AutoMirrored.Outlined.Logout,
                 title = "Sign Out",
@@ -108,10 +128,12 @@ fun ProfileScreenContent(
             title = "Log Out?",
             description = "Are you sure you want to log out?",
             onConfirm = {
-                updateState(state.copy(isLogOutConfirmationShown = false))
+                showHideLogoutConfirmation(false)
                 logOut()
             },
-            onDismiss = { updateState(state.copy(isLogOutConfirmationShown = false)) },
+            onDismiss = {
+                showHideLogoutConfirmation(false)
+            },
             confirmText = "Log Out",
             dismissText = "Cancel"
         )
@@ -123,9 +145,12 @@ fun ProfileScreenContent(
             title = "Fill random expenses?",
             description = "Choosing this option will add about 50 random expenses.(Solely for viewing graphs, contents and functionalities). Do you want to continue?",
             onConfirm = {
-                updateState(state.copy(isFillRandomExpenseConfirmationShown = false))
+                showHideAddExpenseConfirmation(false)
+                addRandomExpense()
             },
-            onDismiss = { updateState(state.copy(isFillRandomExpenseConfirmationShown = false)) },
+            onDismiss = {
+                showHideAddExpenseConfirmation(false)
+            },
             confirmText = "Confirm",
             dismissText = "Cancel"
         )
