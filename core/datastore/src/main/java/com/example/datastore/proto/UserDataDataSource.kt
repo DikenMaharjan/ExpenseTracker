@@ -14,10 +14,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
+import javax.inject.Singleton
 import kotlin.contracts.ExperimentalContracts
 import kotlin.contracts.InvocationKind
 import kotlin.contracts.contract
 
+@Singleton
 class UserDataDataSource @Inject constructor(
     private val userDataDataStore: DataStore<UserDataProto?>,
     private val appDispatchers: AppDispatchers,

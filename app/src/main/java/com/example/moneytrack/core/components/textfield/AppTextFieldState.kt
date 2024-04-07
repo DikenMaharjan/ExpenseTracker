@@ -14,7 +14,7 @@ import androidx.compose.ui.text.input.KeyboardType
 fun rememberTextFieldState(
     hint: String,
     initValue: String = "",
-    textType: AppTextFieldState.TextType = AppTextFieldState.TextType.Text,
+    textType: TextType = TextType.Text,
     highlightError: Boolean = true,
     transform: (String) -> String = { it }
 ): AppTextFieldState =
@@ -53,23 +53,21 @@ open class AppTextFieldState(
 
 
     val isValid: Boolean
-        get() = textType.run {
-            isError = when (this) {
-                TextType.Text -> text.isBlank()
-                TextType.Username -> text.any {
-                    !it.isLetter() && !it.isWhitespace()
-                } || text.length <= 3
-
-                TextType.Password -> text.isBlank()
-            }
-            !isError
+        get() = run {
+            isError = !validate()
+            isError
         }
 
-    enum class TextType(val keyboardType: KeyboardType) {
-        Text(KeyboardType.Text),
-        Password(KeyboardType.Text),
-        Username(KeyboardType.Text)
+    fun validate() = when (textType) {
+        TextType.Text -> text.isNotBlank()
+        TextType.Username -> text.all {
+            it.isLetter() || it.isWhitespace()
+        } && text.length >= 3
+
+        TextType.Password -> text.isNotBlank()
+        TextType.Amount -> text.isNotBlank() && text.toDoubleOrNull() != null
     }
+
 
     companion object {
         val Saver: Saver<AppTextFieldState, *> = listSaver(
@@ -84,4 +82,11 @@ open class AppTextFieldState(
             }
         )
     }
+}
+
+enum class TextType(val keyboardType: KeyboardType) {
+    Text(KeyboardType.Text),
+    Password(KeyboardType.Text),
+    Username(KeyboardType.Text),
+    Amount(KeyboardType.Decimal)
 }

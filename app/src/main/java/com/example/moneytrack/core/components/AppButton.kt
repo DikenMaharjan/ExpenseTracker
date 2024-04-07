@@ -11,11 +11,13 @@ import androidx.compose.ui.Modifier
 fun AppButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
-    text: String
+    text: String,
+    isEnabled: Boolean = true
 ) {
     Button(
         modifier = modifier.fillMaxWidth(),
-        onClick = onClick
+        onClick = onClick,
+        enabled = isEnabled
     ) {
         Text(text = text.uppercase(), style = MaterialTheme.typography.labelLarge)
     }
