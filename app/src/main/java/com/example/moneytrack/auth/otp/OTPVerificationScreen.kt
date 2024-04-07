@@ -18,14 +18,19 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.moneytrack.auth.otp.VerificationType.EmailVerification
 import com.example.moneytrack.auth.otp.VerificationType.LoginVerification
 import com.example.moneytrack.auth.otp.components.OTPTextField
+import com.example.moneytrack.auth.otp.parameterprovider.VerificationTypeProvider
 import com.example.moneytrack.core.components.AppButton
 import com.example.moneytrack.core.components.Screen
+import com.example.moneytrack.core.model.ScreenState
 import com.example.moneytrack.ui.theme.LocalDimens
+import com.example.moneytrack.ui.theme.MoneyTrackTheme
 
 @Composable
 fun OTPVerificationScreen(
@@ -41,11 +46,31 @@ fun OTPVerificationScreen(
             viewModel.onVerificationHandled()
         }
     }
+    OTPVerificationContent(
+        modifier = modifier,
+        screenState = screenState,
+        verificationType = viewModel.verificationType,
+        state = state,
+        onOtpChange = viewModel::onOtpChange,
+        submitOtp = viewModel::submitOtp
+    )
+}
+
+@Composable
+private fun OTPVerificationContent(
+    modifier: Modifier = Modifier,
+    screenState: ScreenState,
+    verificationType: VerificationType,
+    state: OTPVerificationScreenViewModel.State,
+    onOtpChange: (String) -> Unit,
+    submitOtp: () -> Unit
+) {
     Screen(
         modifier = modifier
             .fillMaxSize()
             .background(MaterialTheme.colorScheme.surface),
-        screenState = screenState
+        screenState = screenState,
+        showBack = true
     ) {
         Column(
             modifier = Modifier
@@ -57,17 +82,17 @@ fun OTPVerificationScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             VerificationTitle(
-                verificationType = viewModel.verificationType
+                verificationType = verificationType
             )
 
             OTPTextField(
                 otpCode = state.otpCode,
-                onValueChange = viewModel::onOtpChange,
+                onValueChange = onOtpChange,
                 isError = state.otpError
             )
             AppButton(
                 modifier = Modifier.fillMaxWidth(),
-                onClick = viewModel::submitOtp,
+                onClick = submitOtp,
                 text = "Submit"
             )
             Spacer(modifier = Modifier)
@@ -94,10 +119,27 @@ private fun VerificationTitle(
         Text(
             text = when (verificationType) {
                 EmailVerification -> "We have sent you an email with the verification code."
-                LoginVerification -> "Please check you email. We will be providing you with an OTP code for one time verification."
+                LoginVerification -> "Check your email. We have provided you with an OTP code for one time verification."
             },
             style = MaterialTheme.typography.titleMedium
         )
     }
+}
+
+@Composable
+@Preview
+private fun OtpVerificationScreenContentPreview(
+    @PreviewParameter(VerificationTypeProvider::class) verificationType: VerificationType
+) {
+    MoneyTrackTheme {
+        OTPVerificationContent(
+            screenState = ScreenState(),
+            verificationType = verificationType,
+            state = OTPVerificationScreenViewModel.State(),
+            onOtpChange = {},
+            submitOtp = {}
+        )
+    }
 
 }
+

@@ -54,7 +54,7 @@ class AuthRepository @Inject constructor(
     }
 
     suspend fun verifyEmailOnSignUp(token: String, otpCode: String): Result<Unit> {
-        val response = remoteAuthDataSource.verifyEmailOnSignUp(
+        val response = remoteAuthDataSource.verifyOTP(
             token = token,
             otpCode = otpCode
         )

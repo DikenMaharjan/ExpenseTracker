@@ -32,10 +32,10 @@ app.post("/api/signIn", (req, res) => {
 			error_message: "Incorrect Credentials"
 		});
 	}
-	code = generateCode();
-	
-	console.log(`OTP sent to email: ${email}`);
-	console.log(`Generated code is ${code}`);
+	let code = generateCode();
+		userOtpCodes[newUser.id] = code;
+		console.log(`OTP sent to email ${email}`);
+		console.log(`The OTP is ${code}`)
 
 	let user = result[0];
 
@@ -47,7 +47,7 @@ app.post("/api/signIn", (req, res) => {
 });
 
 
-app.post("/api/signUp/verify", (req, res) => {
+app.post("/api/verify", (req, res) => {
 	const { token, otpCode } = req.body;
 	let userId = token;
 	let filteredUsers =  users.filter((user) => user.id === userId)

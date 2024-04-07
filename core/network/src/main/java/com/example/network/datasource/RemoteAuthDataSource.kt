@@ -3,10 +3,10 @@ package com.example.network.datasource
 import com.example.network.api.MoneyTrackApi
 import com.example.network.model.request.SignInRequest
 import com.example.network.model.request.SignUpRequest
-import com.example.network.model.request.VerifyEmailForRegisterRequest
+import com.example.network.model.request.VerifyOTPRequest
 import com.example.network.model.response.SignInResponseDTO
 import com.example.network.model.response.SignUpResponseDTO
-import com.example.network.model.response.VerifyEmailForRegisterResponseDTO
+import com.example.network.model.response.VerifyOTPResponseDTO
 import com.example.network.utils.SafeApiCall
 import javax.inject.Inject
 
@@ -41,13 +41,13 @@ class RemoteAuthDataSource @Inject constructor(
         }
     }
 
-    suspend fun verifyEmailOnSignUp(
+    suspend fun verifyOTP(
         token: String,
         otpCode: String
-    ): Result<VerifyEmailForRegisterResponseDTO> {
+    ): Result<VerifyOTPResponseDTO> {
         return safeApiCall {
-            moneyTrackApi.verifyEmailOnSignUp(
-                verifyEmailForRegisterRequest = VerifyEmailForRegisterRequest(
+            moneyTrackApi.verifyOTP(
+                verifyOTPRequest = VerifyOTPRequest(
                     token = token,
                     otpCode = otpCode
                 )
