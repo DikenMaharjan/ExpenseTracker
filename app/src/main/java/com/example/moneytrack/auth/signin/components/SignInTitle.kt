@@ -8,12 +8,22 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Visibility
+import androidx.compose.material.icons.filled.VisibilityOff
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import com.example.moneytrack.core.components.AppButton
 import com.example.moneytrack.core.components.textfield.AppTextField
@@ -40,6 +50,9 @@ internal fun SignInTextFields(
     emailTextFieldState: AppTextFieldState,
     passwordTextFieldState: AppTextFieldState
 ) {
+    var isPasswordVisible by rememberSaveable {
+        mutableStateOf(false)
+    }
     Column(
         modifier = modifier.fillMaxWidth()
     ) {
@@ -50,7 +63,18 @@ internal fun SignInTextFields(
         Spacer(modifier = Modifier.height(LocalDimens.current.dimen32))
         AppTextField(
             title = "Password",
-            textFieldState = passwordTextFieldState
+            textFieldState = passwordTextFieldState,
+            trailingIcon = {
+                IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
+                    Icon(
+                        imageVector = if (isPasswordVisible) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                        contentDescription = if (isPasswordVisible) "Hide Password" else "Show password"
+                    )
+                }
+            },
+            visualTransformation = if (isPasswordVisible) VisualTransformation.None else PasswordVisualTransformation(
+                mask = '\u25CF'
+            )
         )
     }
 

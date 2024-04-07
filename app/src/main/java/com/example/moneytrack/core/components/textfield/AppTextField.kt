@@ -2,6 +2,7 @@ package com.example.moneytrack.core.components.textfield
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.BasicTextField
@@ -33,7 +34,8 @@ fun AppTextField(
     visualTransformation: VisualTransformation = VisualTransformation.None,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     textStyle: TextStyle = LocalTextStyle.current,
-    keyboardActions: KeyboardActions? = null
+    keyboardActions: KeyboardActions? = null,
+    trailingIcon: @Composable () -> Unit = {}
 ) = AppTextField(
     modifier = modifier,
     title = title,
@@ -48,7 +50,8 @@ fun AppTextField(
     keyboardOptions = keyboardOptions.copy(keyboardType = textFieldState.textType.keyboardType),
     textStyle = textStyle,
     keyboardActions = keyboardActions,
-    showErrorMsgs = showErrorMsgs
+    showErrorMsgs = showErrorMsgs,
+    trailingIcon = trailingIcon
 )
 
 @Composable
@@ -66,7 +69,8 @@ fun AppTextField(
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     onValueChange: (String) -> Unit,
     textStyle: TextStyle = LocalTextStyle.current,
-    keyboardActions: KeyboardActions? = null
+    keyboardActions: KeyboardActions? = null,
+    trailingIcon: @Composable () -> Unit = {}
 ) {
 
     val keyboardController = LocalSoftwareKeyboardController.current
@@ -89,18 +93,26 @@ fun AppTextField(
             cursorBrush = SolidColor(MaterialTheme.colorScheme.primary),
             decorationBox = {
                 Column {
-                    Box(
-                        modifier = Modifier.padding(vertical = LocalDimens.current.dimen8)
-                    ) {
-                        it.invoke()
-                        if (value.isEmpty()) {
-                            Text(
-                                text = placeHolder,
-                                style = MaterialTheme.typography.labelLarge.merge(textStyle).copy(
-                                    color = MaterialTheme.colorScheme.onBackground.copy(alpha = 0.5f)
+                    Row {
+                        Box(
+                            modifier = Modifier
+                                .padding(vertical = LocalDimens.current.dimen8)
+                                .weight(1f)
+                        ) {
+                            it.invoke()
+                            if (value.isEmpty()) {
+                                Text(
+                                    text = placeHolder,
+                                    style = MaterialTheme.typography.labelLarge.merge(textStyle)
+                                        .copy(
+                                            color = MaterialTheme.colorScheme.onBackground.copy(
+                                                alpha = 0.5f
+                                            )
+                                        )
                                 )
-                            )
+                            }
                         }
+                        trailingIcon()
                     }
                     HorizontalDivider(
                         color = if (errorMsg != null) MaterialTheme.colorScheme.error else DividerDefaults.color
