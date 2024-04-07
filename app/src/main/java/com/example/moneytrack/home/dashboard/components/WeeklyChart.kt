@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.lazy.LazyListScope
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -34,26 +35,26 @@ import java.time.format.TextStyle
 import java.util.Locale
 
 
-@Composable
-fun WeeklyExpenseGraph(
+fun LazyListScope.weeklyExpenseGraph(
     modifier: Modifier = Modifier,
     modelProducer: CartesianChartModelProducer,
     orderedDays: List<DayOfWeek>
 ) {
-    Column(
-        modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(LocalDimens.current.dimen12)
-    ) {
-        Text(text = "Weekly Expense", style = MaterialTheme.typography.titleMedium)
-        WeeklyChart(
-            modelProducer = modelProducer,
-            modifier = Modifier
-                .height(LocalDimens.current.dimen200)
-                .fillMaxWidth(),
-            orderedDays = orderedDays
-        )
+    item {
+        Column(
+            modifier = modifier,
+            verticalArrangement = Arrangement.spacedBy(LocalDimens.current.dimen12)
+        ) {
+            Text(text = "Weekly Expense", style = MaterialTheme.typography.titleMedium)
+            WeeklyChart(
+                modelProducer = modelProducer,
+                modifier = Modifier
+                    .height(LocalDimens.current.dimen200)
+                    .fillMaxWidth(),
+                orderedDays = orderedDays
+            )
+        }
     }
-
 }
 
 @Composable
