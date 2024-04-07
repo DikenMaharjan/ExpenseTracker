@@ -18,9 +18,11 @@ fun NavGraphBuilder.signUpScreen(
         enterTransition = {
             slideInHorizontally { it }
         },
-        exitTransition = {
+        popExitTransition = {
             slideOutHorizontally { it }
-        }
+        },
+        exitTransition = null,
+        popEnterTransition = null
     ) {
         SignUpScreen(
             navigateBack = navController::navigateUp,

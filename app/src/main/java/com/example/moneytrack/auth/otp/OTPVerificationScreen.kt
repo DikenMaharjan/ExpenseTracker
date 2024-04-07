@@ -18,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -40,9 +41,12 @@ fun OTPVerificationScreen(
 ) {
     val screenState by viewModel.screenState.collectAsStateWithLifecycle()
     val state by viewModel.state.collectAsStateWithLifecycle()
+    val localKeyboardController = LocalSoftwareKeyboardController.current
+
     LaunchedEffect(state.isVerificationSuccess) {
         if (state.isVerificationSuccess) {
             navigateToHome()
+            localKeyboardController?.hide()
             viewModel.onVerificationHandled()
         }
     }
