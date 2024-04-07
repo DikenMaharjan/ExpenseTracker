@@ -7,6 +7,7 @@ import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -55,7 +56,9 @@ fun AppContent(
     val viewModel = hiltViewModel<MainActivityViewModel>()
     ModalBottomSheetLayout(
         bottomSheetNavigator = bottomSheetNavigator,
-        sheetShape = MaterialTheme.shapes.large
+        sheetShape = MaterialTheme.shapes.large,
+        sheetBackgroundColor = MaterialTheme.colorScheme.surface,
+        sheetContentColor = LocalContentColor.current
     ) {
         NavHost(
             navController = navController,
