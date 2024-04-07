@@ -22,7 +22,7 @@ class ProfileScreenViewModel @Inject constructor(
     private val _state = MutableStateFlow(State())
     val state = _state.asStateFlow()
 
-    val isDarkMode = MutableStateFlow(false)
+    val isDarkMode = userPreferencesRepository.isDarkModeEnabled
 
     fun updateState(state: State) {
         _state.update { state }

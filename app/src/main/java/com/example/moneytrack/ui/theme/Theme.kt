@@ -1,6 +1,7 @@
 package com.example.moneytrack.ui.theme
 
 import android.app.Activity
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -32,7 +33,8 @@ fun MoneyTrackTheme(
     }
     CompositionLocalProvider(
         LocalExtendedColorScheme provides extendedScheme,
-        LocalDimens provides dimens
+        LocalDimens provides dimens,
+        LocalContentColor provides colorScheme.onBackground
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
