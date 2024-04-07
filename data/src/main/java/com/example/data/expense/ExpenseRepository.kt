@@ -38,13 +38,14 @@ class ExpenseRepository @Inject constructor(
     suspend fun insertExpense(
         name: String,
         amount: Double,
-        category: Category
+        category: Category,
+        createdAt: LocalDateTime = LocalDateTime.now()
     ) {
         withContext(NonCancellable) {
             userDataDataSource.withUserID { userId ->
                 localExpenseDataSource.storeExpense(
                     ExpenseEntity(
-                        createdDate = LocalDateTime.now(),
+                        createdDate = createdAt,
                         expense = amount,
                         userId = userId,
                         name = name,
@@ -55,9 +56,6 @@ class ExpenseRepository @Inject constructor(
         }
     }
 
-    suspend fun addRandomExpenses(count: Int = 50) {
-
-    }
 
 }
 

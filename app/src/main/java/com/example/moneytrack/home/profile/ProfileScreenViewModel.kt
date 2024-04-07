@@ -4,7 +4,7 @@ package com.example.moneytrack.home.profile
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.data.auth.AuthRepository
-import com.example.data.expense.ExpenseRepository
+import com.example.data.category.usecase.AddRandomExpensesUseCase
 import com.example.data.preferences.PreferencesRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +19,7 @@ private const val TAG = "ProfileScreenViewModel"
 class ProfileScreenViewModel @Inject constructor(
     private val authRepository: AuthRepository,
     private val userPreferencesRepository: PreferencesRepository,
-    private val expensesRepository: ExpenseRepository
+    private val addRandomExpensesUseCase: AddRandomExpensesUseCase
 ) : ViewModel() {
 
     val authState = authRepository.authState
@@ -64,7 +64,7 @@ class ProfileScreenViewModel @Inject constructor(
 
     fun addRandomExpense() {
         viewModelScope.launch {
-            expensesRepository.addRandomExpenses()
+            addRandomExpensesUseCase.invoke()
             _state.update { it.copy(isAddingRandomExpenseSuccessful = true) }
         }
     }
