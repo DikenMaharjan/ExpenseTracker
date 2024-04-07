@@ -63,6 +63,7 @@ dependencies {
     implementation(libs.compose.material)
     implementation(libs.compose.runtime)
     implementation(libs.compose.lifecycle)
+    implementation(libs.material.icons)
 
     implementation(libs.androidx.material)
 

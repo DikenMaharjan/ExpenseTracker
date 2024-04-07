@@ -1,26 +1,25 @@
 package com.example.moneytrack.home.profile
 
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.outlined.Logout
+import androidx.compose.material.icons.filled.DarkMode
+import androidx.compose.material.icons.filled.LightMode
+import androidx.compose.material.icons.outlined.FormatColorFill
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.example.data.auth.AuthRepository
 import com.example.data.model.AppUser
-import com.example.moneytrack.core.components.AppUserIcon
-import com.example.moneytrack.ui.theme.LocalDimens
+import com.example.moneytrack.core.components.AppDialog
+import com.example.moneytrack.home.profile.components.ProfileRowOption
+import com.example.moneytrack.home.profile.components.ProfileUserInfo
 
 @Composable
 fun ProfileScreen(
@@ -28,43 +27,104 @@ fun ProfileScreen(
     viewModel: ProfileScreenViewModel = hiltViewModel()
 ) {
     val authState by viewModel.authState.collectAsStateWithLifecycle()
-    when (val auth = authState) {
-        is AuthRepository.AuthState.LoggedIn -> {
-            Column(
-                modifier = modifier
-                    .fillMaxSize()
-                    .systemBarsPadding(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                ProfileUserInfo(appUser = auth.appUser)
+    val isDarkMode by viewModel.isDarkMode.collectAsStateWithLifecycle()
+    val state by viewModel.state.collectAsStateWithLifecycle()
+    Box(modifier = modifier.fillMaxSize()) {
+        when (val auth = authState) {
+            is AuthRepository.AuthState.LoggedIn -> {
+                ProfileScreenContent(
+                    appUser = auth.appUser,
+                    isDarkMode = isDarkMode,
+                    state = state,
+                    updateState = viewModel::updateState,
+                    logOut = {
+                        viewModel.logOut()
+                    }
+                )
             }
+
+            AuthRepository.AuthState.LoggedOut -> {}
         }
-
-        AuthRepository.AuthState.LoggedOut -> {}
     }
-
 }
 
 @Composable
-fun ProfileUserInfo(
+fun ProfileScreenContent(
     modifier: Modifier = Modifier,
-    appUser: AppUser
+    appUser: AppUser,
+    isDarkMode: Boolean,
+    state: ProfileScreenViewModel.State,
+    updateState: (ProfileScreenViewModel.State) -> Unit,
+    logOut: () -> Unit
 ) {
-    Column(
+    LazyColumn(
         modifier = modifier
-            .fillMaxWidth()
-            .padding(vertical = LocalDimens.current.dimen24),
+            .fillMaxSize()
+            .systemBarsPadding(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AppUserIcon(
-            modifier = Modifier.size(LocalDimens.current.dimen80),
-            user = appUser
+        item {
+            ProfileUserInfo(appUser = appUser)
+        }
+
+        item {
+            ProfileRowOption(
+                onClick = {
+                    updateState(state.copy(isFillRandomExpenseConfirmationShown = true))
+                },
+                icon = Icons.Outlined.FormatColorFill,
+                title = "Fill random expenses",
+                description = "Choosing this option will fill the database with random expenses."
+            )
+        }
+
+        item {
+            ProfileRowOption(
+                onClick = { },
+                icon = if (isDarkMode) Icons.Default.LightMode else Icons.Default.DarkMode,
+                title = if (isDarkMode) "Switch to light mode?" else "Switch to dark mode?",
+                description = ""
+            )
+        }
+
+        item {
+            ProfileRowOption(
+                onClick = {
+                    updateState(state.copy(isLogOutConfirmationShown = true))
+                },
+                icon = Icons.AutoMirrored.Outlined.Logout,
+                title = "Sign Out",
+                description = ""
+            )
+        }
+    }
+
+    if (state.isLogOutConfirmationShown) {
+        AppDialog(
+            title = "Log Out?",
+            description = "Are you sure you want to log out?",
+            onConfirm = {
+                logOut()
+                updateState(state.copy(isLogOutConfirmationShown = false))
+            },
+            onDismiss = { updateState(state.copy(isLogOutConfirmationShown = false)) },
+            confirmText = "Log Out",
+            dismissText = "Cancel"
         )
-        Spacer(modifier = Modifier.height(LocalDimens.current.dimen4))
-        Text(
-            text = appUser.name,
-            style = MaterialTheme.typography.titleLarge,
-            fontWeight = FontWeight.Bold
+    }
+
+
+    if (state.isFillRandomExpenseConfirmationShown) {
+        AppDialog(
+            title = "Fill random expenses?",
+            description = "Choosing this option will add about 50 random expenses.(Solely for viewing graphs, contents and functionalities). Do you want to continue?",
+            onConfirm = {
+                updateState(state.copy(isFillRandomExpenseConfirmationShown = false))
+            },
+            onDismiss = { updateState(state.copy(isFillRandomExpenseConfirmationShown = false)) },
+            confirmText = "Confirm",
+            dismissText = "Cancel"
         )
     }
 }
+
