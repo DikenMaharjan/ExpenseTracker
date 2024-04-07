@@ -9,7 +9,7 @@ import javax.inject.Inject
 @HiltViewModel
 class MainActivityViewModel @Inject constructor(
     authRepository: AuthRepository,
-    private val preferencesRepository: PreferencesRepository
+    preferencesRepository: PreferencesRepository
 ) : ViewModel() {
 
     val initialAuthState = authRepository.authState.value
